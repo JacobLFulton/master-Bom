@@ -8,9 +8,7 @@
  ?>
 <html>
 <body>
-<form action="<?php
-  $sql = "INSERT INTO preferences (preference,value) VALUES('min_date', x );";
-  ?>" method="get">
+<form action="netYetSetUp.php" method="get">
   <h3>Date Range</h3>
   <p>from:</p>
   <input type="text" id="min_date" value="">
