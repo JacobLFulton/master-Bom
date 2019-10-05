@@ -18,10 +18,13 @@
     $max_date = $_GET["max_date"];
     $status = $_GET["release_status"];
     $type = $_GET["release_type"];
-    //TODO: add the queries to update other setting values (currently just "min date")
+    //TODO: error checking (probably shoud conver to  mysqli_multi_query())
+
     $sql1 = "UPDATE preferences SET value = $min_date where preference = 'min_date'";
+
     $db->query($sql1);
     $db->close();
+
   }
   ?>
   
