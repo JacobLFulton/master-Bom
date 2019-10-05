@@ -1,5 +1,5 @@
 <?php
-	//asdf
+
   // set the current page; 
   $nav_selected = "ABOUT";
 
