@@ -7,6 +7,42 @@
   include("./nav.php");
   global $db;
 
+  // This section holds logic associated with preferences. A query which returns a result will set $getPreferences to true and populate the appropriate variables.
+  $getPreferences = "SELECT preference, value FROM preferences;";
+  $result = $db->query($getPreferences);
+
+  if ($result->num_rows > 0){
+    $hasPreferences = true;
+    while($row = $result->fetch_assoc()){
+      switch($row["preference"]){
+        case "min_date":
+        $min_date = $row["value"];
+        break;
+        case "max_date":
+        $max_date = $row["value"];
+        break;
+        case "release_status":
+        $status = $row["value"];
+        break;
+        case "release_type":
+        $type = $row["value"];
+        break;
+      }
+    }
+  } else {
+    $hasPreferences = false;
+  }
+  $result->close();
+
+  echo "<p>".$min_date,$max_date,$status,$type."</p>";
+
+  //This is just a test space when I am trying out various queries and echoing to the page.
+  $test = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases ORDER BY $date ASC;";
+  $result = $db->query($test);
+  $row = $result->fetch_assoc();
+  echo "<p>".$row["id"]."</p>";
+  //End test space.
+  
   ?>
 
 
@@ -44,7 +80,14 @@
 
          <?php
 
-$sql = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases ORDER BY $date ASC;";
+//Added if statement to run the appropriate query based on whether the $hasPreferences variable is true or false.
+//TODO Update the query when $hasPreferences is true.
+if($hasPreferences) {
+  $sql = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases WHERE start_d > $min_date ORDER BY $date ASC;";
+} else {
+  $sql = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases ORDER BY $date ASC;";
+}
+
 $result = $db->query($sql);
 
                 if ($result->num_rows > 0) {

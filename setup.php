@@ -24,11 +24,6 @@
 
     $db->query($sql1);
     $db->close();
-
-<<<<<<< HEAD
-=======
-    //testing single file
->>>>>>> ee73ecb55d8b8e03e762df6dd8404d792dba0aa0
   }
   ?>
   
