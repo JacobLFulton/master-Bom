@@ -22,6 +22,8 @@
     $sql1 = "UPDATE preferences SET value = $min_date where preference = 'min_date'";
     $db->query($sql1);
     $db->close();
+
+    //testing single file
   }
   ?>
   
