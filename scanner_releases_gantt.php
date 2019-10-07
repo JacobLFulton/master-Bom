@@ -33,16 +33,6 @@
     $hasPreferences = false;
   }
   $result->close();
-
-  echo "<p>".$min_date,$max_date,$status,$type."</p>";
-
-  //This is just a test space when I am trying out various queries and echoing to the page.
-  $test = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases ORDER BY $date ASC;";
-  $result = $db->query($test);
-  $row = $result->fetch_assoc();
-  echo "<p>".$row["id"]."</p>";
-  //End test space.
-  
   ?>
 
 
@@ -81,9 +71,8 @@
          <?php
 
 //Added if statement to run the appropriate query based on whether the $hasPreferences variable is true or false.
-//TODO Update the query when $hasPreferences is true.
 if($hasPreferences) {
-  $sql = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases WHERE start_d > $min_date ORDER BY $date ASC;";
+  $sql = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases WHERE $date > '$min_date' AND $date < '$max_date' AND status = '$status' AND type = '$type' ORDER BY $date ASC;";
 } else {
   $sql = "SELECT id,name,type,DATE_FORMAT($date,'%Y,%m,%e') AS start_d,DATE_FORMAT(rtm_date, '%Y,%m,%e') AS end_d,(rtm_date)-($date) AS duration from releases ORDER BY $date ASC;";
 }
