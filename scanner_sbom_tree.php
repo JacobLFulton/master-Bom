@@ -13,13 +13,19 @@
 
       <table id="testTable">
         <tr data-tt-id="1">
-          <span class="indenter" style="padding-left: 0px;">
-            <a href="#" title="Expand">&nbsp;</a>
-          </span>  
-          <td>Parent</td>
+          <td>Quiz Master</td>
         </tr>
         <tr data-tt-id="2" data-tt-parent-id="1">
-          <td>Child</td>
+          <td>1.1</td>
+        </tr>
+        <tr data-tt-id="3" data-tt-parent-id="2">
+          <td>Jquery</td>
+        </tr>
+        <tr data-tt-id="4" data-tt-parent-id="3">
+          <td>4.3</td>
+        </tr>
+        <tr data-tt-id="5" data-tt-parent-id="1">
+          <td>2.2</td>
         </tr>
       </table>
 
