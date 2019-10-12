@@ -2,7 +2,8 @@
   $nav_selected = "SCANNER";
   $left_buttons = "YES";
   $left_selected = "SBOMTREE";
-
+  global $db;
+  global $pid;
   include("./nav.php");
   
  ?>
@@ -10,23 +11,34 @@
     <div class="container">
 
       <h3 style = "color: #01B0F1;">Scanner --> BOM Tree</h3>
-
       <table id="testTable">
-        <tr data-tt-id="1">
-          <td>Quiz Master</td>
-        </tr>
-        <tr data-tt-id="2" data-tt-parent-id="1">
-          <td>1.1</td>
-        </tr>
-        <tr data-tt-id="3" data-tt-parent-id="2">
-          <td>Jquery</td>
-        </tr>
-        <tr data-tt-id="4" data-tt-parent-id="3">
-          <td>4.3</td>
-        </tr>
-        <tr data-tt-id="5" data-tt-parent-id="1">
-          <td>2.2</td>
-        </tr>
+      <?php
+      $sql =  "SELECT * FROM sbom ORDER BY row_id ASC;";
+          $result = $db->query($sql);
+
+          if ($result->num_rows > 0) {
+          // output data of each row
+              while($row = $result->fetch_assoc()) {
+                  if($pid != $row["app_id"] && $row["app_name"] != "DB_Layer"){
+                    echo '<tr data-tt-id="'.$row["app_id"].'">
+                            <td>'.$row["app_name"].' '.$row["app_version"].'</td>
+                          </tr>';       
+                  $pid = $row["app_id"];
+                }
+                    echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                          <td>'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                         </tr>';
+                  
+              }//end while
+          }//end if
+          else {
+              echo "0 results";
+          }//end else
+
+       $result->close();
+      ?>
+      
+
       </table>
 
     </div>
