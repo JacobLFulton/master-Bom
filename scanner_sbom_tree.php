@@ -13,8 +13,8 @@
 
       <h3 style = "color: #01B0F1;">Scanner --> BOM Tree</h3>
 
-      <button>Expand All</button>
-      <button>Collapse All</button>
+      <button id="expandAll">Expand All</button>
+      <button id="collapseAll">Collapse All</button>
 
       <table id="sbomTable">
       <?php
@@ -89,12 +89,16 @@
     </div>
 </div>
 
-<link href="./jquery.treetable.css" rel="stylesheet" type="text/css" />
-<link href="./jquery.treetable.theme.default.css" rel="stylesheet" type="text/css" />
-<script src="./jquery.treetable.js"></script>
+<link href="jquery.treetable.css" rel="stylesheet" type="text/css" />
+<link href="jquery.treetable.theme.default.css" rel="stylesheet" type="text/css" />
+<script src="jquery.treetable.js"></script>
 
 <script>
 $("#sbomTable").treetable({expandable: true});
+
+$("#expandAll").click(function(){
+  $("#sbomTable").treetable("expandAll");
+});
 </script>
 
 <?php include("./footer.php"); ?>
