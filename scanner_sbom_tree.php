@@ -12,6 +12,10 @@
     <div class="container">
 
       <h3 style = "color: #01B0F1;">Scanner --> BOM Tree</h3>
+
+      <button>Expand All</button>
+      <button>Collapse All</button>
+
       <table id="sbomTable">
       <?php
       /*
@@ -79,7 +83,7 @@
        $result->close();
 
       ?>
-      
+
       </table>
 
     </div>
