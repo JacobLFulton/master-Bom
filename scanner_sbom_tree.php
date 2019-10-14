@@ -133,10 +133,19 @@
 <script src="jquery.treetable.js"></script>
 
 <script>
- $("#sbomTable").treetable({expandable: true});
 
- $("#expandAll").click(function(){
-  $("#sbomTable").treetable("expandAll");
+ var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
+
+ $("#expandAll").click(function() {
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "expanded"});
+});
+
+ $("#collapseAll").click(function() {
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "collapsed"});
 });
 
 </script>
