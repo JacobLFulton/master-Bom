@@ -29,7 +29,11 @@
         break;
       }
     }
-  } else {
+  }
+  if($min_date == "" && $max_date == "" && $status == "" && $type == ""){
+    $hasPreferences = false;
+  }
+   else {
     $hasPreferences = false;
   }
   $result->close();
