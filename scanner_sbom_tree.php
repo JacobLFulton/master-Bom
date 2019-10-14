@@ -82,8 +82,8 @@
 
       $appRes->close();
       
-      //$sql =  "SELECT app_id,app_name,app_version,cmp_id,cmp_name,cmp_version FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
-      $sql =  "SELECT * FROM sbom ORDER BY row_id ASC;";
+      $sql =  "SELECT app_id,app_name,app_version,cmp_id,cmp_name,cmp_version FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
+      //$sql =  "SELECT * FROM sbom ORDER BY row_id ASC;";
           $result = $db->query($sql);
 
           if ($result->num_rows > 0) {
