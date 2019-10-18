@@ -125,12 +125,27 @@
 <script>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 
 $("#expandAll").click(function() {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "expanded"});
+=======
+ var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
+
+ $("#expandAll").click(function() {
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "expanded"});
+});
+
+ $("#collapseAll").click(function() {
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "collapsed"});
+>>>>>>> 3b283e440a3ea8d91b77dbfb8f048f9840f1aa4d
 });
 
 $("#collapseAll").click(function() {
