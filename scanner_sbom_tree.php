@@ -15,7 +15,8 @@
       <h3 style = "color: #01B0F1;">Scanner --> BOM Tree</h3>
       <h3><img src="images/sbom_tree.png" style="max-height: 35px;" />System Software BOM</h3>
 
-      
+      <button id="expandAll">Expand All</button>
+      <button id="collapseAll">Collapse All</button> 
 
       <table id="sbomTable" cellpadding="0" cellspacing="0" border="0"
             class="datatable table table-bordered datatable-style table-hover"
@@ -113,8 +114,7 @@
       ?>
 
       </table>
-      <button id="expandAll">Expand All</button>
-      <button id="collapseAll">Collapse All</button>
+
     </div>
 </div>
 
