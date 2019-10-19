@@ -24,9 +24,19 @@
               <thead>
                 <tr id="table-first-row">
                         <th>Sbom Tree</th>
-                        <th>Component Status</th>
-                        <th>Component Type</th>
-                        <th>Application Status</th>
+                        <th>App ID</th>
+                        <th>App Name</th>
+                        <th>App Version</th>
+                        <th>CMP ID</th>
+                        <th>CMP Name</th>
+                        <th>CMP Version</th>
+                        <th>CMP Type</th>
+                        <th>App Status</th>
+                        <th>CMP Status</th>
+                        <th>Request ID</th>
+                        <th>Request Date</th>
+                        <th>Request Status</th>
+                        <th>Request Step</th>
                         <th>Notes</th>
                 </tr>
               </thead>
@@ -47,9 +57,19 @@
             $nodeArray[$row["app_id"].$count] = 
             '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
             <td>'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
-            <td>'.$row["cmp_status"].' </span> </td>
+            <td>'.$row["app_id"].' </span> </td>
+            <td>'.$row["app_name"].' </span> </td>
+            <td>'.$row["app_version"].' </span> </td>
+            <td>'.$row["cmp_id"].' </span> </td>
+            <td>'.$row["cmp_name"].' </span> </td>
+            <td>'.$row["cmp_version"].' </span> </td>
             <td>'.$row["cmp_type"].' </span> </td>
             <td>'.$row["app_status"].' </span> </td>
+            <td>'.$row["cmp_status"].' </span> </td>
+            <td>'.$row["request_id"].' </span> </td>
+            <td>'.$row["request_date"].' </span> </td>
+            <td>'.$row["request_status"].' </span> </td>
+            <td>'.$row["request_step"].' </span> </td>
             <td>'.$row["notes"].' </span> </td>
             </tr>';
             array_push($appArray,$row["app_id"]);
