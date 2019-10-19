@@ -5,24 +5,46 @@
 
   include("./nav.php");
 
-  /*
-  Application Report based on the Status (app_status report)
-  Component Report based on the Status (cmp_status report)
-  Request Report based on the Status (request_status report)
-  Request Step Report based on the Step (request_step report)
-  */
-  $appStatus = array();
-  $cmpStatus = array();
-  $requestStatus = array();
-  $requestStep = array();
+  $appStatusChartData = array();
+  $cmpStatusChartData = array();
+  $requestStatusChartData = array();
+  $requestStepChartData = array();
   
+  // Query the sbom table and add appropriate data to each of the data arrays.
   $sql = "SELECT * from sbom;";
   $result = $db->query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
-      
+      // Populate the app_status data.
+      if(!array_key_exists($row["app_status"],$appStatusChartData)){
+        $appStatusChartData += array($row["app_status"] => 1);
+      } else {
+        $appStatusChartData[$row["app_status"]] += 1;
+      }
+
+      // Populate the cmp_status data.
+      if(!array_key_exists($row["cmp_status"],$cmpStatusChartData)){
+        $cmpStatusChartData += array($row["cmp_status"] => 1);
+      } else {
+        $cmpStatusChartData[$row["cmp_status"]] += 1;
+      }
+
+      // Populate the request_status data.
+      if(!array_key_exists($row["request_status"],$requestStatusChartData)){
+        $requestStatusChartData += array($row["request_status"] => 1);
+      } else {
+        $requestStatusChartData[$row["request_status"]] += 1;
+      }
+
+      // Populate the request_step data.
+      if(!array_key_exists($row["request_step"],$requestStepChartData)){
+        $requestStepChartData += array($row["request_step"] => 1);
+      } else {
+        $requestStepChartData[$row["request_step"]] += 1;
+      }
     }
   }
+
 ?>
 
 <head>
@@ -31,48 +53,67 @@
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(
         function(){
-          drawChartOne();
-          drawChartTwo();
-          drawChartThree();
-          drawChartFour();
+          drawAppStatusChart();
+          drawCmpStatusChart();
+          drawRequestStatusChart();
+          drawRequestStepStatusChart();
         }
       );
       
       //Chart one code.
-      function drawChartOne() {
+      function drawAppStatusChart() {
 
         var dataSetOne = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          
+          ['Key', 'Value'],
+          <?php
+            $arrayKeys = array_keys($appStatusChartData);
+
+            // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
+            // last item and remove to comma. Doesn't work otherwise.
+            for($i = 0; $i < count($arrayKeys); $i++){
+              if($i == count($arrayKeys) - 1){
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+              } else {
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+              }
+            }
+          ?>
         ]);
 
         var optionsSetOne = {
-          title: 'Application Report'
+          title: 'Application Report',
+          legend : 'none'
         };
 
         var chartOne = new google.visualization.PieChart(document.getElementById('piechartOne'));
 
         chartOne.draw(dataSetOne, optionsSetOne);
       }
-
+      
       //Chart two code.
-      function drawChartTwo() {
+      function drawCmpStatusChart() {
 
         var dataSetTwo = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          ['Key', 'Value'],
+          <?php
+            $arrayKeys = array_keys($appStatusChartData);
+
+            // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
+            // last item and remove to comma. Doesn't work otherwise.
+            for($i = 0; $i < count($arrayKeys); $i++){
+              if($i == count($arrayKeys) - 1){
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+              } else {
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+              }
+            }
+          ?>
         ]);
 
         var optionsSetTwo = {
-          title: 'Component Report'
+          title: 'Component Report',
+          legend : 'none'
         };
 
         var chartTwo = new google.visualization.PieChart(document.getElementById('piechartTwo'));
@@ -81,19 +122,28 @@
       }
 
         //Chart three code.
-      function drawChartThree() {
+      function drawRequestStatusChart() {
 
         var dataSetThree = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          ['Key', 'Value'],
+          <?php
+            $arrayKeys = array_keys($appStatusChartData);
+
+            // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
+            // last item and remove to comma. Doesn't work otherwise.
+            for($i = 0; $i < count($arrayKeys); $i++){
+              if($i == count($arrayKeys) - 1){
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+              } else {
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+              }
+            }
+          ?>
         ]);
 
         var optionsSetThree = {
-          title: 'Request Report'
+          title: 'Request Report',
+          legend : 'none'
         };
 
         var chartThree = new google.visualization.PieChart(document.getElementById('piechartThree'));
@@ -102,47 +152,55 @@
       }
 
       //Chart four code.
-      function drawChartFour() {
+      function drawRequestStepStatusChart() {
 
         var dataSetFour = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          ['Key', 'Value'],
+          <?php
+            $arrayKeys = array_keys($appStatusChartData);
+
+            // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
+            // last item and remove to comma. Doesn't work otherwise.
+            for($i = 0; $i < count($arrayKeys); $i++){
+              if($i == count($arrayKeys) - 1){
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+              } else {
+                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+              }
+            }
+          ?>
         ]);
 
         var optionsSetFour = {
-          title: 'Request Step Report'
+          title: 'Request Step Report',
+          legend : 'none'
         };
 
         var chartFour = new google.visualization.PieChart(document.getElementById('piechartFour'));
 
         chartFour.draw(dataSetFour, optionsSetFour);
-      }
+      }    
+</script>
 
-    </script>
 </head>
 
- <div class="right-content">
-    <div class="container">
-      <div  class="row">
-        <div id="piechartOne" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-        <div id="piechartTwo" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-      </div>
-      <div class="row">
-        <div id="piechartThree" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-        <div id="piechartFour" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-      </div>
-      <div class="row">
-        <div id="tableData" class="col-lg-12">
-          
-        </div>
-      </div>
-      
-
+  <div class="container">
+    <div  class="row">
+      <div id="piechartOne" class="col-lg-6" style="width: 50%; height: 300px;"></div>
+      <div id="piechartTwo" class="col-lg-6" style="width: 50%; height: 300px;"></div>
     </div>
-</div>
+    <div class="row">
+      <div id="piechartThree" class="col-lg-6" style="width: 50%; height: 300px;"></div>
+      <div id="piechartFour" class="col-lg-6" style="width: 50%; height: 300px;"></div>
+    </div>
+    <div class="row">
+      <div id="tableData" class="col-lg-12">
+        
+      </div>
+    </div>
+    
+
+  </div>
+
 
 <?php include("./footer.php"); ?>
