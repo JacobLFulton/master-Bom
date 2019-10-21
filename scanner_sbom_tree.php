@@ -16,7 +16,6 @@
       <h3><img src="images/sbom_tree.png" style="max-height: 35px;" />System Software BOM</h3>
 
       <button id="expandAll">Expand All</button>
-      <button id="collapseAll">Collapse All</button> 
       <button id="collapseAll">Collapse All</button>
       <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
       <button id="whereUsedSubmit">Where Used</button>
@@ -25,7 +24,7 @@
             class="datatable table table-bordered datatable-style table-hover"
             width="100%" style="width: 100px;">
               <thead>
-                <tr id="table-first-row">
+                <tr id="table-first-row"> 
                         <th>Sbom Tree</th>
                         <th>App ID</th>
                         <th>App Name</th>
