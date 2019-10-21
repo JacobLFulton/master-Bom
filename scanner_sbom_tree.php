@@ -160,6 +160,10 @@ $("#collapseAll").click(function() {
    tree.treetable({expandable: true, initialState: "collapsed"});
 });
 
+$("#whereUsedSubmit").click(function() {
+  
+})
+
 
 </script>
 
