@@ -17,6 +17,9 @@
 
       <button id="expandAll">Expand All</button>
       <button id="collapseAll">Collapse All</button> 
+      <button id="collapseAll">Collapse All</button>
+      <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
+      <button id="whereUsedSubmit">Where Used</button>
 
       <table id="sbomTable" cellpadding="0" cellspacing="0" border="0"
             class="datatable table table-bordered datatable-style table-hover"
