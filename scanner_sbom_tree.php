@@ -16,28 +16,30 @@
       <h3><img src="images/sbom_tree.png" style="max-height: 35px;" />System Software BOM</h3>
 
       <button id="expandAll">Expand All</button>
-      <button id="collapseAll">Collapse All</button> 
+      <button id="collapseAll">Collapse All</button>
+      <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
+      <button id="whereUsedSubmit">Where Used</button>
 
       <table id="sbomTable" cellpadding="0" cellspacing="0" border="0"
             class="datatable table table-bordered datatable-style table-hover"
             width="100%" style="width: 100px;">
               <thead>
-                <tr id="table-first-row">
-                        <th>Sbom Tree</th>
-                        <th>App ID</th>
-                        <th>App Name</th>
-                        <th>App Version</th>
-                        <th>CMP ID</th>
-                        <th>CMP Name</th>
-                        <th>CMP Version</th>
-                        <th>CMP Type</th>
-                        <th>App Status</th>
-                        <th>CMP Status</th>
-                        <th>Request ID</th>
-                        <th>Request Date</th>
-                        <th>Request Status</th>
-                        <th>Request Step</th>
-                        <th>Notes</th>
+                <tr id="table-first-row"> 
+                        <th><strong>Sbom Tree</strong></th>
+                        <th><strong>App ID</strong></th>
+                        <th><strong>App Name</strong></th>
+                        <th><strong>App Version</strong></th>
+                        <th><strong>CMP ID</strong></th>
+                        <th><strong>CMP Name</strong></th>
+                        <th><strong>CMP Version</strong></th>
+                        <th><strong>CMP Type</strong></th>
+                        <th><strong>App Status</strong></th>
+                        <th><strong>CMP Status</strong></th>
+                        <th><strong>Request ID</strong></th>
+                        <th><strong>Request Date</strong></th>
+                        <th><strong>Request Status</strong></th>
+                        <th><strong>Request Step</strong></th>
+                        <th><strong>Notes</th>
                 </tr>
               </thead>
       <?php
@@ -146,18 +148,52 @@
 
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 
-$("#expandAll").click(function() {
+$("#expandAll").click(function(expand) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "expanded"});
 });
 
-$("#collapseAll").click(function() {
+$("#collapseAll").click(function(collapse) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "collapsed"});
 });
 
+
+</script>
+
+<script>
+
+$(document).ready(function(){
+  $("#whereUsedTextInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#sbomTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+// $(document).ready(function(){
+//   $("#whereUsedTextInput").on("keyup", function() {
+//     var input, filter, table, tr, td, i, txtValue;
+//     input = $("#whereUsedTextInput").val().toLowerCase();;
+//     filter = input.value.toUpperCase();
+//     table = document.getElementById("sbomTable");
+//     tr = table.getElementsByTagName("tr");
+//     for (i = 0; i < tr.length; i++) {
+//       td = tr[i].getElementsByTagName("td")[0];
+//       if (td) {
+//         txtValue = td.textContent || td.innerText;
+//         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//           tr[i].style.display = "";
+//         } else {
+//           tr[i].style.display = "none";
+//         }
+//       }       
+//     }
+//   }
+// }
 
 </script>
 
