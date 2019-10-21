@@ -16,6 +16,8 @@
 
       <button id="expandAll">Expand All</button>
       <button id="collapseAll">Collapse All</button>
+      <input type = "text" id = "whereUsedTextInput" value = "text here" />
+      <button id="whereUsedSubmit">Where Used</button>
 
       <table id="sbomTable">
       <?php
