@@ -21,25 +21,25 @@
       <button id="whereUsedSubmit">Where Used</button>
 
       <table id="sbomTable" cellpadding="0" cellspacing="0" border="0"
-            class="datatable table table-bordered datatable-style table-hover"
-            width="100%" style="width: 100px;">
+            class="datatable table table-bordered datatable-style "
+            width="100%" >
               <thead>
                 <tr id="table-first-row"> 
-                        <th><strong>Sbom Tree</strong></th>
-                        <th><strong>App ID</strong></th>
-                        <th><strong>App Name</strong></th>
-                        <th><strong>App Version</strong></th>
-                        <th><strong>CMP ID</strong></th>
-                        <th><strong>CMP Name</strong></th>
-                        <th><strong>CMP Version</strong></th>
-                        <th><strong>CMP Type</strong></th>
-                        <th><strong>App Status</strong></th>
-                        <th><strong>CMP Status</strong></th>
-                        <th><strong>Request ID</strong></th>
-                        <th><strong>Request Date</strong></th>
-                        <th><strong>Request Status</strong></th>
-                        <th><strong>Request Step</strong></th>
-                        <th><strong>Notes</th>
+                        <th style="width:200px"><strong>Sbom Tree</strong></th>
+                        <th style="width:30px"><strong>App ID</strong></th>
+                        <th style="width:30px"><strong>App Name</strong></th>
+                        <th style="width:30px"><strong>App Version</strong></th>
+                        <th style="width:30px"><strong>CMP ID</strong></th>
+                        <th style="width:30px"><strong>CMP Name</strong></th>
+                        <th style="width:30px"><strong>CMP Version</strong></th>
+                        <th style="width:30px"><strong>CMP Type</strong></th>
+                        <th style="width:30px"><strong>App Status</strong></th>
+                        <th style="width:30px"><strong>CMP Status</strong></th>
+                        <th style="width:70px"><strong>Request ID</strong></th>
+                        <th style="width:30px"><strong>Request Date</strong></th>
+                        <th style="width:30px"><strong>Request Status</strong></th>
+                        <th style="width:30px"><strong>Request Step</strong></th>
+                        <th style="width:30px"><strong>Notes</th>
                 </tr>
               </thead>
       <?php
@@ -85,7 +85,7 @@
 
       $appRes->close();
       
-      $sql =  "SELECT app_id,app_name,app_version,cmp_id,cmp_name,cmp_status,cmp_type,app_status,notes,cmp_version FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
+      $sql =  "SELECT * FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
       //$sql =  "SELECT * FROM sbom ORDER BY row_id ASC;";
           $result = $db->query($sql);
 
@@ -95,9 +95,19 @@
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
                           <td>'.$row["app_name"].' '.$row["app_version"].'</td>
-                          <td>'.$row["cmp_status"].' </span> </td>
-                          <td>'.$row["cmp_type"].' </span> </td>
+                          <td>'.$row["app_id"].' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
                           <td>'.$row["app_status"].' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
+                          <td>'.' </span> </td>
                           <td>'.$row["notes"].' </span> </td></tr>';       
                   $pid = $row["app_id"];
                 }
@@ -105,9 +115,19 @@
                                                         // it pulls the child components of that application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td>'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
-                      <td>'.$row["cmp_status"].' </span> </td>
-                      <td>'.$row["cmp_type"].' </span> </td>
+                      <td>'.$row["app_id"].' </span> </td>
+                      <td>'.$row["app_name"].' </span> </td>
+                      <td>'.$row["app_version"].' </span> </td>
+                      <td>'.' </span> </td>
+                      <td>'.' </span> </td>
+                      <td>'.' </span> </td>
+                      <td>'.' </span> </td>
                       <td>'.$row["app_status"].' </span> </td>
+                      <td>'.' </span> </td>
+                      <td>'.$row["request_id"].' </span> </td>
+                      <td>'.$row["request_date"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
                       <td>'.$row["notes"].' </span> </td></tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
@@ -118,9 +138,19 @@
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td>'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
-                      <td>'.$row["cmp_status"].' </span> </td>
+                      <td>'.$row["app_id"].' </span> </td>
+                      <td>'.$row["app_name"].' </span> </td>
+                      <td>'.$row["app_version"].' </span> </td>
+                      <td>'.$row["cmp_id"].' </span> </td>
+                      <td>'.$row["cmp_name"].' </span> </td>
+                      <td>'.$row["cmp_version"].' </span> </td>
                       <td>'.$row["cmp_type"].' </span> </td>
                       <td>'.$row["app_status"].' </span> </td>
+                      <td>'.$row["cmp_status"].' </span> </td>
+                      <td>'.$row["request_id"].' </span> </td>
+                      <td>'.$row["request_date"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
                       <td>'.$row["notes"].' </span> </td></tr>';
                 }
 
@@ -146,26 +176,10 @@
 
 <script>
 
-var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
-
-$("#expandAll").click(function(expand) {
-   tree.treetable('destroy');
-   tree.find(".indenter").remove();
-   tree.treetable({expandable: true, initialState: "expanded"});
-});
-
-$("#collapseAll").click(function(collapse) {
-   tree.treetable('destroy');
-   tree.find(".indenter").remove();
-   tree.treetable({expandable: true, initialState: "collapsed"});
-});
-
-
-</script>
-
-<script>
-
 $(document).ready(function(){
+  $('#info').DataTable( {
+            dom: 'lfrtBip'}
+        );
   $("#whereUsedTextInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#sbomTable tr").filter(function() {
@@ -195,7 +209,27 @@ $(document).ready(function(){
 //   }
 // }
 
+
+var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
+
+$("#expandAll").click(function(expand) {
+   tree.treetable('destroy');
+   tree.find(".indenter").remove();
+   tree.treetable({expandable: true, initialState: "expanded"});
+});
+
+$("#collapseAll").click(function(collapse) {
+   tree.treetable('destroy');
+   tree.find(".indenter").remove();
+   tree.treetable({expandable: true, initialState: "collapsed"});
+});
+
+
 </script>
+
+<script>
+
+
 
 <?php include("./footer.php"); ?>
 
