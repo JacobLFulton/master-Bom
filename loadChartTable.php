@@ -9,16 +9,13 @@
     $slice = $_POST["targetSliceName"];
     $dbTableName = "sbom";
 
-    echo $chart;
-    echo $slice;
-
     // Populate table headers.
     $sql = "SHOW columns FROM " . $dbTableName . ";";
     $result = $db->query($sql);
 
-    echo "<table class='table'>";
+    echo "<table class='table table-bordered'>";
     if($result->num_rows > 0){
-        echo "<thead>";
+        echo "<thead class='thead-dark'>";
         echo "<tr>";
         while($row = $result->fetch_assoc()){
             

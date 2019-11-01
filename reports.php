@@ -9,8 +9,6 @@
   $cmpStatusChartData = array();
   $requestStatusChartData = array();
   $requestStepChartData = array();
-
-  $chartSelection = "";
   
   // Query the sbom table and add appropriate data to each of the data arrays.
   $sql = "SELECT * from sbom;";
@@ -98,6 +96,7 @@
 
         function appStatusSelectHandler(){
           var selectedItem = chart.getSelection()[0];
+
           if(selectedItem){
             var sliceName = appStatusDataSet.getValue(selectedItem.row, 0);
           }
@@ -108,6 +107,8 @@
                 targetSliceName: sliceName
               });
           });
+
+          chart.setSelection();
         }
       }
       
@@ -155,6 +156,8 @@
                 targetSliceName: sliceName
               });
           });
+
+          chart.setSelection();
         }
       }
 
@@ -187,7 +190,24 @@
 
         chart.draw(requestStatusDataSet, requestStatusOptions);
 
-        //google.visualization.events.addListener(chart, "select", selectHandler);
+        google.visualization.events.addListener(chart, "select", requestStatusSelectHandler);
+
+        function requestStatusSelectHandler(){
+          var selectedItem = chart.getSelection()[0];
+
+          if(selectedItem){
+            var sliceName = requestStatusDataSet.getValue(selectedItem.row, 0);
+          }
+
+          $(document).ready(function(){
+              $("#selectionTable").load("loadChartTable.php",{
+                targetChart:"request_status",
+                targetSliceName: sliceName
+              });
+          });
+
+          chart.setSelection();
+        }
       }
 
       // Request Step code.
@@ -219,17 +239,39 @@
 
         chart.draw(requestStepDataSet, requestStepOptions);
 
-        //google.visualization.events.addListener(chart, "select", selectHandler);
+        google.visualization.events.addListener(chart, "select", requestStepSelectHandler);
+
+        function requestStepSelectHandler(){
+          var selectedItem = chart.getSelection()[0];
+
+          if(selectedItem){
+            var sliceName = requestStepDataSet.getValue(selectedItem.row, 0);
+          }
+
+          $(document).ready(function(){
+              $("#selectionTable").load("loadChartTable.php",{
+                targetChart:"request_step",
+                targetSliceName: sliceName
+              });
+          });
+
+          chart.setSelection();
+        }
       }
 </script>
 
 </head>
-
-  <div class="container">
-    <div id="sideNavigation">
-      <a href="#" id="sideNavBomChart">BOM Chart</a>
+  <div class="container-fluid">
+    <div class="sidebar">
+      <nav class="sidebar-nav">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">BOM Reports</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <div id="bomCharts",>
+    <div id="bomCharts">
       <div  class="row">
         <div id="appStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
         <div id="cmpStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
@@ -238,7 +280,7 @@
         <div id="requestStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
         <div id="requestStepChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
     </div>
-    <div id="selectionTable">
+    <div id="selectionTable"></div>
     </div>
   </div>
 
@@ -247,7 +289,7 @@
 ?>
 
 <script>
-  $("#sideNavBomChart").click(function(){
+  $(".sidebar").click(function(){
     $("#bomCharts").toggle();
   });
 
