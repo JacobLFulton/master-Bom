@@ -102,8 +102,6 @@
             var sliceName = appStatusDataSet.getValue(selectedItem.row, 0);
           }
 
-          //alert(selectedItem);
-
           $(document).ready(function(){
               $("#selectionTable").load("loadChartTable.php",{
                 targetChart:"app_status",
@@ -150,8 +148,6 @@
           if(selectedItem){
             var sliceName = cmpStatusDataSet.getValue(selectedItem.row, 0);
           }
-
-          alert(selectedItem);
           
           $(document).ready(function(){
               $("#selectionTable").load("loadChartTable.php",{
