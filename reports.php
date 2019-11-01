@@ -9,6 +9,8 @@
   $cmpStatusChartData = array();
   $requestStatusChartData = array();
   $requestStepChartData = array();
+
+  $chartSelection = "";
   
   // Query the sbom table and add appropriate data to each of the data arrays.
   $sql = "SELECT * from sbom;";
@@ -50,6 +52,8 @@
 <head>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      var sliceSelection = "";
+
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(
         function(){
@@ -63,7 +67,7 @@
       //Chart one code.
       function drawAppStatusChart() {
 
-        var dataSetOne = google.visualization.arrayToDataTable([
+        var appStatusDataSet = google.visualization.arrayToDataTable([
           
           ['Key', 'Value'],
           <?php
@@ -81,126 +85,174 @@
           ?>
         ]);
 
-        var optionsSetOne = {
+        var appStatusOptions = {
           title: 'Application Report',
           legend : 'none'
         };
 
-        var chartOne = new google.visualization.PieChart(document.getElementById('piechartOne'));
+        var chart = new google.visualization.PieChart(document.getElementById('appStatusChart'));
 
-        chartOne.draw(dataSetOne, optionsSetOne);
+        chart.draw(appStatusDataSet, appStatusOptions);
+
+        google.visualization.events.addListener(chart, "select", appStatusSelectHandler);
+
+        function appStatusSelectHandler(){
+          var selectedItem = chart.getSelection()[0];
+          if(selectedItem){
+            var sliceName = appStatusDataSet.getValue(selectedItem.row, 0);
+          }
+
+          //alert(selectedItem);
+
+          $(document).ready(function(){
+              $("#selectionTable").load("loadChartTable.php",{
+                targetChart:"app_status",
+                targetSliceName: sliceName
+              });
+          });
+        }
       }
       
-      //Chart two code.
+      
+      //Cmp Status code.
       function drawCmpStatusChart() {
 
-        var dataSetTwo = google.visualization.arrayToDataTable([
+        var cmpStatusDataSet = google.visualization.arrayToDataTable([
           ['Key', 'Value'],
           <?php
-            $arrayKeys = array_keys($appStatusChartData);
+            $arrayKeys = array_keys($cmpStatusChartData);
 
             // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
             // last item and remove to comma. Doesn't work otherwise.
             for($i = 0; $i < count($arrayKeys); $i++){
               if($i == count($arrayKeys) - 1){
-                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+                echo "['" . $arrayKeys[$i] . "'," . $cmpStatusChartData[$arrayKeys[$i]] . "]";
               } else {
-                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+                echo "['" . $arrayKeys[$i] . "'," . $cmpStatusChartData[$arrayKeys[$i]] . "],";
               }
             }
           ?>
         ]);
 
-        var optionsSetTwo = {
-          title: 'Component Report',
+        var cmpStatusOptions = {
+          title: 'Component Status Report',
           legend : 'none'
         };
 
-        var chartTwo = new google.visualization.PieChart(document.getElementById('piechartTwo'));
+        var chart = new google.visualization.PieChart(document.getElementById('cmpStatusChart'));
 
-        chartTwo.draw(dataSetTwo, optionsSetTwo);
+        chart.draw(cmpStatusDataSet, cmpStatusOptions);
+
+        google.visualization.events.addListener(chart, "select", cmpStatusSelectHandler);
+
+        function cmpStatusSelectHandler(){
+          var selectedItem = chart.getSelection()[0];
+          if(selectedItem){
+            var sliceName = cmpStatusDataSet.getValue(selectedItem.row, 0);
+          }
+
+          alert(selectedItem);
+          
+          $(document).ready(function(){
+              $("#selectionTable").load("loadChartTable.php",{
+                targetChart:"cmp_status",
+                targetSliceName: sliceName
+              });
+          });
+        }
       }
 
-        //Chart three code.
+        // Request Status code.
       function drawRequestStatusChart() {
 
-        var dataSetThree = google.visualization.arrayToDataTable([
+        var requestStatusDataSet = google.visualization.arrayToDataTable([
           ['Key', 'Value'],
           <?php
-            $arrayKeys = array_keys($appStatusChartData);
+            $arrayKeys = array_keys($requestStatusChartData);
 
             // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
             // last item and remove to comma. Doesn't work otherwise.
             for($i = 0; $i < count($arrayKeys); $i++){
               if($i == count($arrayKeys) - 1){
-                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+                echo "['" . $arrayKeys[$i] . "'," . $requestStatusChartData[$arrayKeys[$i]] . "]";
               } else {
-                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+                echo "['" . $arrayKeys[$i] . "'," . $requestStatusChartData[$arrayKeys[$i]] . "],";
               }
             }
           ?>
         ]);
 
-        var optionsSetThree = {
-          title: 'Request Report',
+        var requestStatusOptions = {
+          title: 'Request Status Report',
           legend : 'none'
         };
 
-        var chartThree = new google.visualization.PieChart(document.getElementById('piechartThree'));
+        var chart = new google.visualization.PieChart(document.getElementById('requestStatusChart'));
 
-        chartThree.draw(dataSetThree, optionsSetThree);
+        chart.draw(requestStatusDataSet, requestStatusOptions);
+
+        //google.visualization.events.addListener(chart, "select", selectHandler);
       }
 
-      //Chart four code.
+      // Request Step code.
       function drawRequestStepStatusChart() {
 
-        var dataSetFour = google.visualization.arrayToDataTable([
+        var requestStepDataSet = google.visualization.arrayToDataTable([
           ['Key', 'Value'],
           <?php
-            $arrayKeys = array_keys($appStatusChartData);
+            $arrayKeys = array_keys($requestStepChartData);
 
             // Had to pull out the and put into an array so I could use a for loop. This was so I could itentify the
             // last item and remove to comma. Doesn't work otherwise.
             for($i = 0; $i < count($arrayKeys); $i++){
               if($i == count($arrayKeys) - 1){
-                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "]";
+                echo "['" . $arrayKeys[$i] . "'," . $requestStepChartData[$arrayKeys[$i]] . "]";
               } else {
-                echo "['" . $arrayKeys[$i] . "'," . $appStatusChartData[$arrayKeys[$i]] . "],";
+                echo "['" . $arrayKeys[$i] . "'," . $requestStepChartData[$arrayKeys[$i]] . "],";
               }
             }
           ?>
         ]);
 
-        var optionsSetFour = {
+        var requestStepOptions = {
           title: 'Request Step Report',
           legend : 'none'
         };
 
-        var chartFour = new google.visualization.PieChart(document.getElementById('piechartFour'));
+        var chart = new google.visualization.PieChart(document.getElementById('requestStepChart'));
 
-        chartFour.draw(dataSetFour, optionsSetFour);
-      }    
+        chart.draw(requestStepDataSet, requestStepOptions);
+
+        //google.visualization.events.addListener(chart, "select", selectHandler);
+      }
 </script>
 
 </head>
 
   <div class="container">
-    <div  class="row">
-      <div id="piechartOne" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-      <div id="piechartTwo" class="col-lg-6" style="width: 50%; height: 300px;"></div>
+    <div id="sideNavigation">
+      <a href="#" id="sideNavBomChart">BOM Chart</a>
     </div>
-    <div class="row">
-      <div id="piechartThree" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-      <div id="piechartFour" class="col-lg-6" style="width: 50%; height: 300px;"></div>
-    </div>
-    <div class="row">
-      <div id="tableData" class="col-lg-12">
-        
+    <div id="bomCharts",>
+      <div  class="row">
+        <div id="appStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
+        <div id="cmpStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
       </div>
+      <div class="row">
+        <div id="requestStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
+        <div id="requestStepChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
     </div>
-    
-
+    <div id="selectionTable">
+    </div>
   </div>
 
+<?php
+  include("./footer.php");
+?>
 
-<?php include("./footer.php"); ?>
+<script>
+  $("#sideNavBomChart").click(function(){
+    $("#bomCharts").toggle();
+  });
+
+</script>
