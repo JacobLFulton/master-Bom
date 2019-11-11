@@ -24,7 +24,7 @@
             class="datatable table table-bordered datatable-style "
             width="100%" >
               <thead>
-                <tr id="table-first-row"> 
+                <div id="table-first-row"> 
                         <th style="width:200px"><strong>Sbom Tree</strong></th>
                         <th style="width:30px"><strong>App ID</strong></th>
                         <th style="width:30px"><strong>App Name</strong></th>
@@ -40,7 +40,7 @@
                         <th style="width:30px"><strong>Request Status</strong></th>
                         <th style="width:30px"><strong>Request Step</strong></th>
                         <th style="width:30px"><strong>Notes</th>
-                </tr>
+                </div>
               </thead>
       <?php
       $count = 0;
@@ -182,7 +182,7 @@ $(document).ready(function(){
         );
   $("#whereUsedTextInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-    $("#sbomTable tr").filter(function() {
+    $("#sbomTable td").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
   });
