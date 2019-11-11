@@ -28,10 +28,10 @@
                         <th style="width:200px"><strong>Sbom Tree</strong></th>
                         <th style="width:30px"><strong>App ID</strong></th>
                         <th style="width:30px"><strong>App Name</strong></th>
-                        <th style="width:30px"><strong>App Version</strong></th>
+                        <th style="width:20px"><strong>App Version</strong></th>
                         <th style="width:30px"><strong>CMP ID</strong></th>
                         <th style="width:30px"><strong>CMP Name</strong></th>
-                        <th style="width:30px"><strong>CMP Version</strong></th>
+                        <th style="width:20px"><strong>CMP Version</strong></th>
                         <th style="width:30px"><strong>CMP Type</strong></th>
                         <th style="width:30px"><strong>App Status</strong></th>
                         <th style="width:30px"><strong>CMP Status</strong></th>
