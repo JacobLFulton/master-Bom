@@ -210,6 +210,7 @@ $(document).ready(function(){
 // }
 
 
+
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 
 $("#expandAll").click(function(expand) {
