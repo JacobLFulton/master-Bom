@@ -10,6 +10,7 @@
   $requestStatusChartData = array();
   $requestStepChartData = array();
   
+  
   // Query the sbom table and add appropriate data to each of the data arrays.
   $sql = "SELECT * from sbom;";
   $result = $db->query($sql);
