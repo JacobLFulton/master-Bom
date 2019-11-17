@@ -2,6 +2,7 @@
   $nav_selected = "SCANNER";
   $left_buttons = "YES";
   $left_selected = "SBOMTREE";
+  $blank = "<td> </span> </td>";
   global $db;
   global $pid;
   
@@ -17,6 +18,8 @@
 
       <button id="expandAll">Expand All</button>
       <button id="collapseAll">Collapse All</button>
+      <button id="showRed">Show Red</button>
+      <button id="showRed&Yellow">Show Red & Yellow</button>
       <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
       <button id="whereUsedSubmit">Where Used</button>
 
@@ -92,23 +95,23 @@
           if ($result->num_rows > 0) {
           // output data of each row
               while($row = $result->fetch_assoc()) {
-                if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node if the app_id is not a component
+                if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
                           <td>'.$row["app_name"].' '.$row["app_version"].'</td>
-                          <td>'.$row["app_id"].' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.$row["app_status"].' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.' </span> </td>
-                          <td>'.$row["notes"].' </span> </td></tr>';       
+                          <td>'.$row["app_id"].' </span> </td>'.
+                          $blank.
+                          $blank.
+                          $blank.
+                          $blank.
+                          $blank.
+                          $blank.
+                          '<td>'.$row["app_status"].' </span> </td>'.
+                          $blank.
+                          $blank.
+                          $blank.
+                          $blank.
+                          $blank.
+                          '<td>'.$row["notes"].' </span> </td></tr>';       
                   $pid = $row["app_id"];
                 }
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
@@ -118,13 +121,13 @@
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
-                      <td>'.' </span> </td>
-                      <td>'.' </span> </td>
-                      <td>'.' </span> </td>
-                      <td>'.' </span> </td>
-                      <td>'.$row["app_status"].' </span> </td>
-                      <td>'.' </span> </td>
-                      <td>'.$row["request_id"].' </span> </td>
+                      <td>'.$row["cmp_id"].' </span> </td>'.
+                      $blank.
+                      $blank.
+                      $blank.
+                      '<td>'.$row["app_status"].' </span> </td>'.
+                      $blank.
+                      '<td>'.$row["request_id"].' </span> </td>
                       <td>'.$row["request_date"].' </span> </td>
                       <td>'.$row["request_status"].' </span> </td>
                       <td>'.$row["request_step"].' </span> </td>
@@ -134,6 +137,7 @@
                     echo $nodeArray[$row["cmp_id"].$count];
                     $count++;
                   }
+
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
@@ -211,7 +215,6 @@ $(document).ready(function(){
 
 
 
-
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 
 $("#expandAll").click(function(expand) {
@@ -224,6 +227,15 @@ $("#collapseAll").click(function(collapse) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "collapsed"});
+});
+
+//testing move function
+$("#showRed").click(function(showR){
+  $("#sbomTable").treetable('move','101.1','');
+});
+//testing move function
+$("#showRed$Yellow").click(function(showR){
+  $("#sbomTable").treetable('move','101.1','');
 });
 
 
