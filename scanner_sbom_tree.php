@@ -18,7 +18,7 @@
 
       <button id="expandAll">Expand All</button>
       <button id="collapseAll">Collapse All</button>
-      <button id="noColor">No Color</button>
+      <button id="noColor">Color / No Color</button>
       <button id="showRed">Show Red</button>
       <button id="showRedYellow">Show Red & Yellow</button>
       <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
@@ -51,6 +51,8 @@
       $cmpArray = array();
       $appArray = array();
       $nodeArray = array();
+      $nodeIDArray = array();
+      $rootYellow = array();
 
       $appQuery = "SELECT * from sbom ORDER BY row_id ASC;";
         $appRes = $db->query($appQuery);
@@ -63,7 +65,7 @@
             }
             $nodeArray[$row["app_id"].$count] = 
             '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-            <td class="colorChange" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+            <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
             <td>'.$row["app_id"].' </span> </td>
             <td>'.$row["app_name"].' </span> </td>
             <td>'.$row["app_version"].' </span> </td>
@@ -99,7 +101,7 @@
               while($row = $result->fetch_assoc()) {
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
-                          <td class="colorChange" bgcolor = "#ff6666">'.$row["app_name"].' '.$row["app_version"].'</td>
+                          <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' '.$row["app_version"].'</td>
                           <td>'.$row["app_id"].' </span> </td>'.
                           $blank.
                           $blank.
@@ -119,7 +121,7 @@
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-                      <td class="colorChange" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
@@ -143,7 +145,7 @@
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-                      <td class="colorChange" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
@@ -216,7 +218,7 @@ $(document).ready(function(){
 // }
 
 
-
+var color = 0;
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 
 $("#expandAll").click(function(expand) {
@@ -240,7 +242,18 @@ $("#showRedYellow").click(function(showR){
   $("#sbomTable").treetable('move','101.1','');
 });
 $("#noColor").click(function(showR){
-  $('.colorChange').css('background-color', '#f8f7fa');
+  if (color == 0){
+   $('.red').css('background-color', '#f8f7fa');
+   $('.yellow').css('background-color', '#f8f7fa');
+   $('.green').css('background-color', '#f8f7fa');
+   color = 1 ; 
+  }
+  else {
+   $('.red').css('background-color', '#ff6666');
+   $('.yellow').css('background-color', '#f5fa69');
+   $('.green').css('background-color', '#57c95c');
+   color = 0;
+  }
 });
 
 
