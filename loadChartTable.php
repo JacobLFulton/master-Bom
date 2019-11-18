@@ -5,18 +5,29 @@
     $errors = array();
     $config = array();
 
-    $chart = $_POST["targetChart"];
-    $slice = $_POST["targetSliceName"];
+    $chart;
+    $slice;
+
+    if(isset($_POST["targetChart"])){
+        $chart = $_POST["targetChart"];
+    }
+    
+    if(isset($_POST["targetSliceName"])){
+        $slice = $_POST["targetSliceName"];
+    }
+    
     $dbTableName = "sbom";
 
     // Populate table headers.
     $sql = "SHOW columns FROM " . $dbTableName . ";";
     $result = $db->query($sql);
 
-    echo "<table class='table table-bordered'>";
+    echo "<table id='info' cellpadding='0' cellspacing='0' border='0'
+    class='datatable table table-striped table-bordered datatable-style table-hover'
+    width='100%' style='width: 100px; display: block;'>";
     if($result->num_rows > 0){
         echo "<thead class='thead-dark'>";
-        echo "<tr>";
+        echo "<tr id='table-first-row'>";
         while($row = $result->fetch_assoc()){
             
             echo "<th scope='col'>" . $row['Field'] . "</th>";
@@ -27,7 +38,11 @@
     }
 
     // Populate table body.
-    $sql = "SELECT * FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+    if(isset($chart)) {
+        $sql = "SELECT * FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+    } else {
+        $sql = "SELECT * FROM sbom;";
+    }
     $result = $db->query($sql);
 
     if($result->num_rows > 0){
@@ -43,3 +58,38 @@
     
     mysqli_close($db);
 ?>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready( function () {
+        
+        $('#info').DataTable( {
+            dom: 'lfrtBip',
+            buttons: [
+                'copy', 'excel', 'csv', 'pdf'
+            ] }
+        );
+
+        $('#info thead tr').clone(true).appendTo( '#info thead' );
+        $('#info thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+    
+        var table = $('#info').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true
+        } );
+        
+    } );
+
+</script>
