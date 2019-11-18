@@ -263,15 +263,6 @@
 
 </head>
   <div class="container-fluid">
-    <div class="sidebar">
-      <nav class="sidebar-nav">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">BOM Reports</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
     <div id="bomCharts">
       <div  class="row">
         <div id="appStatusChart" class="col-lg-6" style="width: 50%; height: 300px;"></div>
@@ -292,6 +283,10 @@
 <script>
   $(".sidebar").click(function(){
     $("#bomCharts").toggle();
+  });
+
+  $(document).ready(function(){
+      $("#selectionTable").load("loadChartTable.php");
   });
 
 </script>

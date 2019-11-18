@@ -54,7 +54,7 @@
       $nodeIDArray = array();
       $rootYellow = array();
 
-      $appQuery = "SELECT * from sbom ORDER BY row_id ASC;";
+      $appQuery = "SELECT * from sbom ORDER BY request_id ASC;";
         $appRes = $db->query($appQuery);
         $color = "#ecebf0";
         if ($appRes->num_rows > 0) {
@@ -93,7 +93,7 @@
       $appRes->close();
       
       $sql =  "SELECT * FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
-      //$sql =  "SELECT * FROM sbom ORDER BY row_id ASC;";
+      //$sql =  "SELECT * FROM sbom ORDER BY request_id ASC;";
           $result = $db->query($sql);
 	  $color = "#ecebf0";
           if ($result->num_rows > 0) {
