@@ -18,8 +18,9 @@
 
       <button id="expandAll">Expand All</button>
       <button id="collapseAll">Collapse All</button>
+      <button id="noColor">No Color</button>
       <button id="showRed">Show Red</button>
-      <button id="showRed&Yellow">Show Red & Yellow</button>
+      <button id="showRedYellow">Show Red & Yellow</button>
       <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
       <button id="whereUsedSubmit">Where Used</button>
 
@@ -53,6 +54,7 @@
 
       $appQuery = "SELECT * from sbom ORDER BY row_id ASC;";
         $appRes = $db->query($appQuery);
+        $color = "#ecebf0";
         if ($appRes->num_rows > 0) {
           while($row = $appRes->fetch_assoc()) {
             if($pid != $row["app_id"]){
@@ -61,7 +63,7 @@
             }
             $nodeArray[$row["app_id"].$count] = 
             '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-            <td bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+            <td class="colorChange" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
             <td>'.$row["app_id"].' </span> </td>
             <td>'.$row["app_name"].' </span> </td>
             <td>'.$row["app_version"].' </span> </td>
@@ -91,13 +93,13 @@
       $sql =  "SELECT * FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
       //$sql =  "SELECT * FROM sbom ORDER BY row_id ASC;";
           $result = $db->query($sql);
-
+	  $color = "#ecebf0";
           if ($result->num_rows > 0) {
           // output data of each row
               while($row = $result->fetch_assoc()) {
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
-                          <td bgcolor = "#ff6666">'.$row["app_name"].' '.$row["app_version"].'</td>
+                          <td class="colorChange" bgcolor = "#ff6666">'.$row["app_name"].' '.$row["app_version"].'</td>
                           <td>'.$row["app_id"].' </span> </td>'.
                           $blank.
                           $blank.
@@ -117,7 +119,7 @@
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-                      <td bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="colorChange" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
@@ -141,7 +143,7 @@
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-                      <td bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="colorChange" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
@@ -234,8 +236,11 @@ $("#showRed").click(function(showR){
   $("#sbomTable").treetable('move','101.1','');
 });
 //testing move function
-$("#showRed$Yellow").click(function(showR){
+$("#showRedYellow").click(function(showR){
   $("#sbomTable").treetable('move','101.1','');
+});
+$("#noColor").click(function(showR){
+  $('.colorChange').css('background-color', '#f8f7fa');
 });
 
 
