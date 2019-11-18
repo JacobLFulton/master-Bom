@@ -22,12 +22,10 @@
     $sql = "SHOW columns FROM " . $dbTableName . ";";
     $result = $db->query($sql);
 
-    echo "<table id='info' cellpadding='0' cellspacing='0' border='0'
-    class='datatable table table-striped table-bordered datatable-style table-hover'
-    width='100%' style='width: 100px; display: block;'>";
+    echo "<table id='info' class='table table-bordered table-hover'>";
     if($result->num_rows > 0){
-        echo "<thead class='thead-dark'>";
-        echo "<tr id='table-first-row'>";
+        echo "<thead>";
+        echo "<tr>";
         while($row = $result->fetch_assoc()){
             
             echo "<th scope='col'>" . $row['Field'] . "</th>";

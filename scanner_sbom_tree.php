@@ -25,25 +25,25 @@
       <button id="whereUsedSubmit">Where Used</button>
 
       <table id="sbomTable" cellpadding="0" cellspacing="0" border="0"
-            class="datatable table table-bordered datatable-style "
-            width="100%" >
+            class="datatable table table-striped table-bordered datatable-style table-hover"
+            width="100%" style="width: 100px;">
               <thead>
                 <div id="table-first-row"> 
-                        <th style="width:200px"><strong>Sbom Tree</strong></th>
-                        <th style="width:30px"><strong>App ID</strong></th>
-                        <th style="width:30px"><strong>App Name</strong></th>
-                        <th style="width:20px"><strong>App Version</strong></th>
-                        <th style="width:30px"><strong>CMP ID</strong></th>
-                        <th style="width:30px"><strong>CMP Name</strong></th>
-                        <th style="width:20px"><strong>CMP Version</strong></th>
-                        <th style="width:30px"><strong>CMP Type</strong></th>
-                        <th style="width:30px"><strong>App Status</strong></th>
-                        <th style="width:30px"><strong>CMP Status</strong></th>
-                        <th style="width:70px"><strong>Request ID</strong></th>
-                        <th style="width:30px"><strong>Request Date</strong></th>
-                        <th style="width:30px"><strong>Request Status</strong></th>
-                        <th style="width:30px"><strong>Request Step</strong></th>
-                        <th style="width:30px"><strong>Notes</th>
+                        <th><strong>Sbom Tree</strong></th>
+                        <th><strong>App ID</strong></th>
+                        <th><strong>App Name</strong></th>
+                        <th><strong>App Version</strong></th>
+                        <th><strong>CMP ID</strong></th>
+                        <th><strong>CMP Name</strong></th>
+                        <th><strong>CMP Version</strong></th>
+                        <th><strong>CMP Type</strong></th>
+                        <th><strong>App Status</strong></th>
+                        <th><strong>CMP Status</strong></th>
+                        <th><strong>Request ID</strong></th>
+                        <th><strong>Request Date</strong></th>
+                        <th><strong>Request Status</strong></th>
+                        <th><strong>Request Step</strong></th>
+                        <th><strong>Notes</th>
                 </div>
               </thead>
       <?php
@@ -125,13 +125,13 @@
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
-                      <td>'.$row["cmp_id"].' </span> </td>'.
-                      $blank.
-                      $blank.
-                      $blank.
-                      '<td>'.$row["app_status"].' </span> </td>'.
-                      $blank.
-                      '<td>'.$row["request_id"].' </span> </td>
+                      <td>'.$row["cmp_id"].' </span> </td>
+                      <td>'.$blank.'</span> </td>
+                      <td>'.$blank.'</span> </td>
+                      <td>'.$blank.'</span> </td>
+                      <td>'.$row["app_status"].' </span> </td>
+                      <td>'.$blank.'</span> </td>
+                      <td>'.$row["request_id"].' </span> </td>
                       <td>'.$row["request_date"].' </span> </td>
                       <td>'.$row["request_status"].' </span> </td>
                       <td>'.$row["request_step"].' </span> </td>
@@ -185,7 +185,7 @@
 <script>
 
 $(document).ready(function(){
-  $('#info').DataTable( {
+  $('#sbomTable').DataTable( {
             dom: 'lfrtBip'}
         );
   $("#whereUsedTextInput").on("keyup", function() {
@@ -194,28 +194,6 @@ $(document).ready(function(){
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
   });
-});
-
-// $(document).ready(function(){
-//   $("#whereUsedTextInput").on("keyup", function() {
-//     var input, filter, table, tr, td, i, txtValue;
-//     input = $("#whereUsedTextInput").val().toLowerCase();;
-//     filter = input.value.toUpperCase();
-//     table = document.getElementById("sbomTable");
-//     tr = table.getElementsByTagName("tr");
-//     for (i = 0; i < tr.length; i++) {
-//       td = tr[i].getElementsByTagName("td")[0];
-//       if (td) {
-//         txtValue = td.textContent || td.innerText;
-//         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-//           tr[i].style.display = "";
-//         } else {
-//           tr[i].style.display = "none";
-//         }
-//       }       
-//     }
-//   }
-// }
 
 
 var color = 0;
