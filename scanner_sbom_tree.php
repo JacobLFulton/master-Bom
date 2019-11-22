@@ -53,7 +53,8 @@
       $nodeArray = array();
       $nodeIDArray = array();
       $rootYellow = array();
-
+      $nodeYellow = array();
+      $nodeChild = array();
       $appQuery = "SELECT * from sbom ORDER BY request_id ASC;";
         $appRes = $db->query($appQuery);
         $color = "#ecebf0";
@@ -63,8 +64,11 @@
               $count = 0;
               $pid = $row["app_id"];
             }
+            
+            $nodeIDArray[$row["app_id"].$count] =
+            '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'';
             $nodeArray[$row["app_id"].$count] = 
-            '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+            '">
             <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
             <td>'.$row["app_id"].' </span> </td>
             <td>'.$row["app_name"].' </span> </td>
@@ -89,7 +93,6 @@
         else {
           echo "0 results";
         }//end else
-
       $appRes->close();
       
       $sql =  "SELECT * FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
@@ -138,10 +141,31 @@
                       <td>'.$row["notes"].' </span> </td></tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
-                    echo $nodeArray[$row["cmp_id"].$count];
+                    echo $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count];
                     $count++;
                   }
-
+                  array_push($rootYellow, $row["cmp_id"].'root');
+                  $nodeYellow[$row["cmp_id"].'root']='<tr data-tt-id="'.$row["cmp_id"].'root">
+                      <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td>'.$row["app_id"].' </span> </td>
+                      <td>'.$row["app_name"].' </span> </td>
+                      <td>'.$row["app_version"].' </span> </td>
+                      <td>'.$row["cmp_id"].' </span> </td>'.
+                      $blank.
+                      $blank.
+                      $blank.
+                      '<td>'.$row["app_status"].' </span> </td>'.
+                      $blank.
+                      '<td>'.$row["request_id"].' </span> </td>
+                      <td>'.$row["request_date"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
+                      <td>'.$row["notes"].' </span> </td></tr>';
+                  $count = 0;
+                  while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
+                    $nodeChild[$row["cmp_id"].'root'.$count] = $nodeIDArray[$row["cmp_id"].$count]."root".$nodeArray[$row["cmp_id"].$count];
+                    $count++;
+                  }
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
@@ -161,16 +185,13 @@
                       <td>'.$row["request_step"].' </span> </td>
                       <td>'.$row["notes"].' </span> </td></tr>';
                 }
-
                   
               }//end while
           }//end if
           else {
               echo "0 results";
           }//end else
-
        $result->close();
-
       ?>
 
       </table>
@@ -183,7 +204,6 @@
 <script src="jquery.treetable.js"></script>
 
 <script>
-
 $(document).ready(function(){
   $('#info').DataTable( {
             dom: 'lfrtBip'}
@@ -195,7 +215,6 @@ $(document).ready(function(){
     });
   });
 });
-
 // $(document).ready(function(){
 //   $("#whereUsedTextInput").on("keyup", function() {
 //     var input, filter, table, tr, td, i, txtValue;
@@ -216,30 +235,54 @@ $(document).ready(function(){
 //     }
 //   }
 // }
-
-
 var color = 0;
+var showY = 0;
+var rootCount = 0;
+var childCount = 0;
+var rootYellow = <?php echo '["' . implode('", "', $rootYellow) . '"]' ?>;
+var nodeYellow = <?php echo json_encode($nodeYellow) ?>;
+var nodeChild = <?php echo json_encode($nodeChild) ?>;
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
-
 $("#expandAll").click(function(expand) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "expanded"});
 });
-
 $("#collapseAll").click(function(collapse) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "collapsed"});
 });
 
-//testing move function
 $("#showRed").click(function(showR){
-  $("#sbomTable").treetable('move','101.1','');
+  if (showY == 1){
+    while(rootCount < rootYellow.length){
+      $("#sbomTable").treetable('removeNode',rootYellow[rootCount]); 
+      rootCount++;
+    }
+    showY = 0;
+  }
+  rootCount = 0;
 });
+
 //testing move function
 $("#showRedYellow").click(function(showR){
-  $("#sbomTable").treetable('move','101.1','');
+  if (showY == 0){
+    while(rootCount < rootYellow.length){
+      $("#sbomTable").treetable('loadBranch',null,nodeYellow[rootYellow[rootCount]]);
+      var id =  "".concat(rootYellow[rootCount],childCount);
+        while(id in nodeChild){
+          $("#sbomTable").treetable('loadBranch',null,nodeChild[id]);
+          childCount++;
+          id =  "".concat(rootYellow[rootCount],childCount);
+        } 
+      childCount = 0;
+      rootCount++;
+    }
+    showY = 1;
+
+  }
+  rootCount = 0;
 });
 $("#noColor").click(function(showR){
   if (color == 0){
@@ -255,14 +298,7 @@ $("#noColor").click(function(showR){
    color = 0;
   }
 });
-
-
 </script>
 
 <script>
-
-
-
 <?php include("./footer.php"); ?>
-
-
