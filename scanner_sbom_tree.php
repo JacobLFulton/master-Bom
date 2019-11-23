@@ -21,6 +21,7 @@
       <button id="noColor">Color / No Color</button>
       <button id="showRed">Show Red</button>
       <button id="showRedYellow">Show Red & Yellow</button>
+      <button id="showOutOfSync">Show Out of Sync</button>
       <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
       <button id="whereUsedSubmit">Where Used</button>
 
@@ -252,6 +253,13 @@ $("#collapseAll").click(function(collapse) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "collapsed"});
+});
+
+$("#showOutOfSync").click(function(showR){
+    while(rootCount < 6){
+      $("#sbomTable").treetable('removeNode',rootYellow[rootCount]); 
+      rootCount++;
+    }
 });
 
 $("#showRed").click(function(showR){
