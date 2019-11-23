@@ -64,7 +64,7 @@ $result = $db->query($sql);
                     while($row = $result->fetch_assoc()) {
                         echo '<tr>
                                 <td>'.$row["id"].'</td>
-                                <td>'.$row["name"].' </span> </td>
+                                <td><a href = "./scanner_sbom_tree.php">'.$row["name"].' </span></a> </td>
                                 <td>'.$row["type"].'</td>
                                 <td>'.$row["status"].'</td>
                                 <td>'.$row["open_date"].' </span> </td>
