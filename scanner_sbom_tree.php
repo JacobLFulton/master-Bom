@@ -30,19 +30,17 @@
             width="100%" >
               <thead>
                 <div id="table-first-row"> 
-                        <th style="width:200px"><strong>Sbom Tree</strong></th>
-                        <th style="width:30px"><strong>App ID</strong></th>
-                       
-                        <th style="width:20px"><strong>App Version</strong></th>
-                       
-                        <th style="width:30px"><strong>CMP Type</strong></th>
-                        
+                        <th style="width:200px"><strong>App Name</strong></th>
+                        <th style="width:30px"><strong>version</strong></th>
+                        <th style="width:30px"><strong>Status</strong></th>
+                        <th style="width:30px"><strong>CMP type</strong></th>
                         <th style="width:30px"><strong>Request Status</strong></th>
                         <th style="width:30px"><strong>Request Step</strong></th>
                         <th style="width:30px"><strong>Notes</th>
                 </div>
               </thead>
       <?php
+      //<th style="width:20px"><strong>App Version</strong></th>
       // <th style="width:30px"><strong>App Name</strong></th>
       //<th style="width:30px"><strong>CMP ID</strong></th>
       //<th style="width:30px"><strong>CMP Name</strong></th>
@@ -73,13 +71,9 @@
             $nodeArray[$row["app_id"].$count] = 
             '">
             <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
-            <td>'.$row["app_id"].' </span> </td>
-            
-            <td>'.$row["app_version"].' </span> </td>
-         
-           
+            <td>'.$row["cmp_version"].' </span> </td>
+            <td>'.$row["cmp_status"].' </span> </td>
             <td>'.$row["cmp_type"].' </span> </td>
-           
             <td>'.$row["request_status"].' </span> </td>
             <td>'.$row["request_step"].' </span> </td>
             <td>'.$row["notes"].' </span> </td>
@@ -104,13 +98,10 @@
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
                           <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
-                          <td>'.$row["app_id"].' </span> </td>
                           <td>'.$row["app_version"].' </span> </td>
-         
-           
-                          <td>'.$row["cmp_type"].' </span> </td>
-           
-                          <td>'.$row["request_status"].' </span> </td>
+                          <td>'.$row["app_status"].' </span> </td>'.
+                          $blank.
+                          '<td>'.$row["request_status"].' </span> </td>
                           <td>'.$row["request_step"].' </span> </td>
                           <td>'.$row["notes"].' </span> </td>
                           </tr>';      
@@ -120,16 +111,13 @@
                                                         // it pulls the child components of that application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
-                      <td>'.$row["app_id"].' </span> </td>
-                      <td>'.$row["app_version"].' </span> </td>
-         
-           
-            <td>'.$row["cmp_type"].' </span> </td>
-           
-            <td>'.$row["request_status"].' </span> </td>
-            <td>'.$row["request_step"].' </span> </td>
-            <td>'.$row["notes"].' </span> </td>
-            </tr>';
+                      <td>'.$row["cmp_version"].' </span> </td>
+                      <td>'.$row["cmp_status"].' </span> </td>
+                      <td>'.$row["cmp_type"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
+                      <td>'.$row["notes"].' </span> </td>
+                      </tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
                     echo $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count];
@@ -138,16 +126,13 @@
                   array_push($rootYellow, $row["cmp_id"].'root');
                   $nodeYellow[$row["cmp_id"].'root']='<tr data-tt-id="'.$row["cmp_id"].'root">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
-                      <td>'.$row["app_id"].' </span> </td>
-                      <td>'.$row["app_version"].' </span> </td>
-         
-           
-            <td>'.$row["cmp_type"].' </span> </td>
-           
-            <td>'.$row["request_status"].' </span> </td>
-            <td>'.$row["request_step"].' </span> </td>
-            <td>'.$row["notes"].' </span> </td>
-            </tr>';
+                      <td>'.$row["cmp_version"].' </span> </td>
+                      <td>'.$row["cmp_status"].' </span> </td>
+                      <td>'.$row["cmp_type"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
+                      <td>'.$row["notes"].' </span> </td>
+                      </tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
                     $nodeChild[$row["cmp_id"].'root'.$count] = $nodeIDArray[$row["cmp_id"].$count]."root".$nodeArray[$row["cmp_id"].$count];
@@ -157,16 +142,13 @@
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
-                      <td>'.$row["app_id"].' </span> </td>
-                      <td>'.$row["app_version"].' </span> </td>
-         
-           
-            <td>'.$row["cmp_type"].' </span> </td>
-           
-            <td>'.$row["request_status"].' </span> </td>
-            <td>'.$row["request_step"].' </span> </td>
-            <td>'.$row["notes"].' </span> </td>
-            </tr>';
+                      <td>'.$row["cmp_version"].' </span> </td>
+                      <td>'.$row["cmp_status"].' </span> </td>
+                      <td>'.$row["cmp_type"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
+                      <td>'.$row["notes"].' </span> </td>
+                      </tr>';
                 }
                   
               }//end while
@@ -226,6 +208,7 @@ var rootYellow = <?php echo '["' . implode('", "', $rootYellow) . '"]' ?>;
 var nodeYellow = <?php echo json_encode($nodeYellow) ?>;
 var nodeChild = <?php echo json_encode($nodeChild) ?>;
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
+
 $("#expandAll").click(function(expand) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
@@ -237,7 +220,7 @@ $("#collapseAll").click(function(collapse) {
    tree.treetable({expandable: true, initialState: "collapsed"});
 });
 
-$("#showOutOfSync").click(function(showR){
+$("#showOutOfSync").click(function(showOut){
     while(rootCount < 6){
       $("#sbomTable").treetable('removeNode',rootYellow[rootCount]); 
       rootCount++;
@@ -256,7 +239,7 @@ $("#showRed").click(function(showR){
 });
 
 //testing move function
-$("#showRedYellow").click(function(showR){
+$("#showRedYellow").click(function(showRandY){
   if (showY == 0){
     while(rootCount < rootYellow.length){
       $("#sbomTable").treetable('loadBranch',null,nodeYellow[rootYellow[rootCount]]);
@@ -287,6 +270,7 @@ $("#noColor").click(function(showR){
    $('.green').css('background-color', '#57c95c');
    color = 0;
   }
+  
 });
 </script>
 
