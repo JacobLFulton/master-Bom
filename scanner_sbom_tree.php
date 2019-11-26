@@ -31,7 +31,7 @@
               <thead>
                 <div id="table-first-row"> 
                         <th style="width:200px"><strong>App Name</strong></th>
-                        <th style="width:30px"><strong>version</strong></th>
+                        <th style="width:30px"><strong>Version</strong></th>
                         <th style="width:30px"><strong>Status</strong></th>
                         <th style="width:30px"><strong>CMP type</strong></th>
                         <th style="width:30px"><strong>Request Status</strong></th>
