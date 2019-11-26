@@ -32,22 +32,24 @@
                 <div id="table-first-row"> 
                         <th style="width:200px"><strong>Sbom Tree</strong></th>
                         <th style="width:30px"><strong>App ID</strong></th>
-                        <th style="width:30px"><strong>App Name</strong></th>
+                       
                         <th style="width:20px"><strong>App Version</strong></th>
-                        <th style="width:30px"><strong>CMP ID</strong></th>
-                        <th style="width:30px"><strong>CMP Name</strong></th>
-                        <th style="width:20px"><strong>CMP Version</strong></th>
+                       
                         <th style="width:30px"><strong>CMP Type</strong></th>
-                        <th style="width:30px"><strong>App Status</strong></th>
-                        <th style="width:30px"><strong>CMP Status</strong></th>
-                        <th style="width:70px"><strong>Request ID</strong></th>
-                        <th style="width:30px"><strong>Request Date</strong></th>
+                        
                         <th style="width:30px"><strong>Request Status</strong></th>
                         <th style="width:30px"><strong>Request Step</strong></th>
                         <th style="width:30px"><strong>Notes</th>
                 </div>
               </thead>
       <?php
+      // <th style="width:30px"><strong>App Name</strong></th>
+      //<th style="width:30px"><strong>CMP ID</strong></th>
+      //<th style="width:30px"><strong>CMP Name</strong></th>
+      //<th style="width:20px"><strong>CMP Version</strong></th>
+      //<th style="width:30px"><strong>CMP ID</strong></th>
+      //<th style="width:30px"><strong>CMP Name</strong></th>
+      //<th style="width:20px"><strong>CMP Version</strong></th>
       $count = 0;
       $cmpArray = array();
       $appArray = array();
@@ -72,16 +74,12 @@
             '">
             <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
             <td>'.$row["app_id"].' </span> </td>
-            <td>'.$row["app_name"].' </span> </td>
+            
             <td>'.$row["app_version"].' </span> </td>
-            <td>'.$row["cmp_id"].' </span> </td>
-            <td>'.$row["cmp_name"].' </span> </td>
-            <td>'.$row["cmp_version"].' </span> </td>
+         
+           
             <td>'.$row["cmp_type"].' </span> </td>
-            <td>'.$row["app_status"].' </span> </td>
-            <td>'.$row["cmp_status"].' </span> </td>
-            <td>'.$row["request_id"].' </span> </td>
-            <td>'.$row["request_date"].' </span> </td>
+           
             <td>'.$row["request_status"].' </span> </td>
             <td>'.$row["request_step"].' </span> </td>
             <td>'.$row["notes"].' </span> </td>
@@ -106,20 +104,16 @@
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
                           <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' '.$row["app_version"].'</td>
-                          <td>'.$row["app_id"].' </span> </td>'.
-                          $blank.
-                          $blank.
-                          $blank.
-                          $blank.
-                          $blank.
-                          $blank.
-                          '<td>'.$row["app_status"].' </span> </td>'.
-                          $blank.
-                          $blank.
-                          $blank.
-                          $blank.
-                          $blank.
-                          '<td>'.$row["notes"].' </span> </td></tr>';       
+                          <td>'.$row["app_id"].' </span> </td>
+                          <td>'.$row["app_version"].' </span> </td>
+         
+           
+                          <td>'.$row["cmp_type"].' </span> </td>
+           
+                          <td>'.$row["request_status"].' </span> </td>
+                          <td>'.$row["request_step"].' </span> </td>
+                          <td>'.$row["notes"].' </span> </td>
+                          </tr>';      
                   $pid = $row["app_id"];
                 }
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
@@ -127,19 +121,15 @@
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
-                      <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
-                      <td>'.$row["cmp_id"].' </span> </td>'.
-                      $blank.
-                      $blank.
-                      $blank.
-                      '<td>'.$row["app_status"].' </span> </td>'.
-                      $blank.
-                      '<td>'.$row["request_id"].' </span> </td>
-                      <td>'.$row["request_date"].' </span> </td>
-                      <td>'.$row["request_status"].' </span> </td>
-                      <td>'.$row["request_step"].' </span> </td>
-                      <td>'.$row["notes"].' </span> </td></tr>';
+         
+           
+            <td>'.$row["cmp_type"].' </span> </td>
+           
+            <td>'.$row["request_status"].' </span> </td>
+            <td>'.$row["request_step"].' </span> </td>
+            <td>'.$row["notes"].' </span> </td>
+            </tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
                     echo $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count];
@@ -149,19 +139,15 @@
                   $nodeYellow[$row["cmp_id"].'root']='<tr data-tt-id="'.$row["cmp_id"].'root">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
-                      <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
-                      <td>'.$row["cmp_id"].' </span> </td>'.
-                      $blank.
-                      $blank.
-                      $blank.
-                      '<td>'.$row["app_status"].' </span> </td>'.
-                      $blank.
-                      '<td>'.$row["request_id"].' </span> </td>
-                      <td>'.$row["request_date"].' </span> </td>
-                      <td>'.$row["request_status"].' </span> </td>
-                      <td>'.$row["request_step"].' </span> </td>
-                      <td>'.$row["notes"].' </span> </td></tr>';
+         
+           
+            <td>'.$row["cmp_type"].' </span> </td>
+           
+            <td>'.$row["request_status"].' </span> </td>
+            <td>'.$row["request_step"].' </span> </td>
+            <td>'.$row["notes"].' </span> </td>
+            </tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
                     $nodeChild[$row["cmp_id"].'root'.$count] = $nodeIDArray[$row["cmp_id"].$count]."root".$nodeArray[$row["cmp_id"].$count];
@@ -172,19 +158,15 @@
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
                       <td>'.$row["app_id"].' </span> </td>
-                      <td>'.$row["app_name"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
-                      <td>'.$row["cmp_id"].' </span> </td>
-                      <td>'.$row["cmp_name"].' </span> </td>
-                      <td>'.$row["cmp_version"].' </span> </td>
-                      <td>'.$row["cmp_type"].' </span> </td>
-                      <td>'.$row["app_status"].' </span> </td>
-                      <td>'.$row["cmp_status"].' </span> </td>
-                      <td>'.$row["request_id"].' </span> </td>
-                      <td>'.$row["request_date"].' </span> </td>
-                      <td>'.$row["request_status"].' </span> </td>
-                      <td>'.$row["request_step"].' </span> </td>
-                      <td>'.$row["notes"].' </span> </td></tr>';
+         
+           
+            <td>'.$row["cmp_type"].' </span> </td>
+           
+            <td>'.$row["request_status"].' </span> </td>
+            <td>'.$row["request_step"].' </span> </td>
+            <td>'.$row["notes"].' </span> </td>
+            </tr>';
                 }
                   
               }//end while
