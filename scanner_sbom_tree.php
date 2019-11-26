@@ -72,7 +72,7 @@
             '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'';
             $nodeArray[$row["app_id"].$count] = 
             '">
-            <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+            <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
             <td>'.$row["app_id"].' </span> </td>
             
             <td>'.$row["app_version"].' </span> </td>
@@ -103,7 +103,7 @@
               while($row = $result->fetch_assoc()) {
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   echo '<tr data-tt-id="'.$row["app_id"].'">
-                          <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' '.$row["app_version"].'</td>
+                          <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
                           <td>'.$row["app_id"].' </span> </td>
                           <td>'.$row["app_version"].' </span> </td>
          
@@ -119,7 +119,7 @@
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-                      <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
          
@@ -137,7 +137,7 @@
                   }
                   array_push($rootYellow, $row["cmp_id"].'root');
                   $nodeYellow[$row["cmp_id"].'root']='<tr data-tt-id="'.$row["cmp_id"].'root">
-                      <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
          
@@ -156,7 +156,7 @@
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
-                      <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' '.$row["cmp_version"].'</td>
+                      <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
                       <td>'.$row["app_id"].' </span> </td>
                       <td>'.$row["app_version"].' </span> </td>
          
