@@ -18,6 +18,61 @@
     
     $dbTableName = "sbom";
 
+    if($chart == "app_status"){
+        echo "<table id='info' class='table table-bordered table-hover'>";
+            echo "<thead>";
+                echo "<tr>";
+                    echo "<th scope='col'>app_name</th>";
+                    echo "<th scope='col'>app_version</th>";
+                    echo "<th scope='col'>app_status</th>";
+                echo "</tr>";
+            echo "</thead>";
+    } elseif($chart == "cmp_status"){
+        echo "<table id='info' class='table table-bordered table-hover'>";
+            echo "<thead>";
+                echo "<tr>";
+                    echo "<th scope='col'>cmp_name</th>";
+                    echo "<th scope='col'>cmp_version</th>";
+                    echo "<th scope='col'>cmp_status</th>";
+                    echo "<th scope='col'>cmp_type</th>";
+                echo "</tr>";
+            echo "</thead>";
+    } elseif($chart == "request_status"){
+        $sql = "SHOW columns FROM " . $dbTableName . ";";
+        $result = $db->query($sql);
+
+        echo "<table id='info' class='table table-bordered table-hover'>";
+        if($result->num_rows > 0){
+            echo "<thead>";
+            echo "<tr>";
+            while($row = $result->fetch_assoc()){
+                
+                echo "<th scope='col'>" . $row['Field'] . "</th>";
+                
+            }
+            echo "</tr>";
+            echo "</thead>";
+        }
+    } elseif($chart == "request_step"){
+        $sql = "SHOW columns FROM " . $dbTableName . ";";
+        $result = $db->query($sql);
+
+        echo "<table id='info' class='table table-bordered table-hover'>";
+        if($result->num_rows > 0){
+            echo "<thead>";
+            echo "<tr>";
+            while($row = $result->fetch_assoc()){
+                
+                echo "<th scope='col'>" . $row['Field'] . "</th>";
+                
+            }
+            echo "</tr>";
+            echo "</thead>";
+        }
+    }
+
+    /*
+    // Old implementation
     // Populate table headers.
     $sql = "SHOW columns FROM " . $dbTableName . ";";
     $result = $db->query($sql);
@@ -34,12 +89,29 @@
         echo "</tr>";
         echo "</thead>";
     }
+    */
 
     // Populate table body.
     if(isset($chart)) {
-        $sql = "SELECT * FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+        if($chart == "app_status"){
+            $sql = "SELECT app_name, app_version, app_status FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+        } elseif($chart == "cmp_status"){
+            $sql = "SELECT cmp_name, cmp_version, cmp_status, cmp_type FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+        } elseif($chart == "request_status"){
+            $sql = "SELECT * FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+        } elseif($chart == "request_step"){
+            $sql = "SELECT * FROM sbom WHERE " . $chart . " = '" . $slice . "';";
+        }
     } else {
-        $sql = "SELECT * FROM sbom;";
+        if($chart == "app_status"){
+            $sql = "SELECT app_name, app_version, app_status FROM sbom;";
+        } elseif($chart == "cmp_status"){
+            $sql = "SELECT cmp_name, cmp_version, cmp_status, cmp_type FROM sbom;";
+        } elseif($chart == "request_status"){
+            $sql = "SELECT * FROM sbom;";
+        } elseif($chart == "request_step"){
+            $sql = "SELECT * FROM sbom;";
+        }
     }
     $result = $db->query($sql);
 
