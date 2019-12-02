@@ -20,6 +20,7 @@
       <button id="collapseAll">Collapse All</button>
       <button id="noColor">Color / No Color</button>
       <button id="showRed">Show Red</button>
+      <button id="showYellow">Show Yellow</button>
       <button id="showRedYellow">Show Red & Yellow</button>
       <button id="showOutOfSync">Show Out of Sync</button>
       <input type="text" id="whereUsedTextInput" placeholder="e.g. Bingo;2.4" />
@@ -54,8 +55,12 @@
       $nodeArray = array();
       $nodeIDArray = array();
       $rootYellow = array();
+      $rootRed = array();
       $nodeYellow = array();
-      $nodeChild = array();
+      $Child = array();
+      $nodes = array();
+      $nodeIndex = array();
+      $nodeRed = array();
       $appQuery = "SELECT * from sbom ORDER BY request_id ASC;";
         $appRes = $db->query($appQuery);
         $color = "#ecebf0";
@@ -96,6 +101,8 @@
           // output data of each row
               while($row = $result->fetch_assoc()) {
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
+                  array_push($rootRed, $row["app_id"]);
+                  $nodeIndex[sizeof($nodes)] = ["app_id"];
                   echo '<tr data-tt-id="'.$row["app_id"].'">
                           <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
                           <td>'.$row["app_version"].' </span> </td>
@@ -104,11 +111,24 @@
                           '<td>'.$row["request_status"].' </span> </td>
                           <td>'.$row["request_step"].' </span> </td>
                           <td>'.$row["notes"].' </span> </td>
-                          </tr>';      
+                          </tr>';    
+                          //for storing red node data
+                  array_push($nodes,'<tr data-tt-id="'.$row["app_id"].'">
+                          <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
+                          <td>'.$row["app_version"].' </span> </td>
+                          <td>'.$row["app_status"].' </span> </td>'.
+                          $blank.
+                          '<td>'.$row["request_status"].' </span> </td>
+                          <td>'.$row["request_step"].' </span> </td>
+                          <td>'.$row["notes"].' </span> </td>
+                          </tr>');
                   $pid = $row["app_id"];
                 }
+
+
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
+                  $nodeIndex[sizeof($nodes)] = ["app_id"];
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                       <td>'.$row["cmp_version"].' </span> </td>
@@ -123,6 +143,7 @@
                     echo $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count];
                     $count++;
                   }
+                  //for root yellow
                   array_push($rootYellow, $row["cmp_id"].'root');
                   $nodeYellow[$row["cmp_id"].'root']='<tr data-tt-id="'.$row["cmp_id"].'root">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
@@ -135,9 +156,27 @@
                       </tr>';
                   $count = 0;
                   while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
-                    $nodeChild[$row["cmp_id"].'root'.$count] = $nodeIDArray[$row["cmp_id"].$count]."root".$nodeArray[$row["cmp_id"].$count];
+                    $Child[$row["cmp_id"].'root'.$count] = $nodeIDArray[$row["cmp_id"].$count]."root".$nodeArray[$row["cmp_id"].$count];
                     $count++;
                   }
+                  //for storing red node data
+                  array_push($nodes, '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                  <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
+                  <td>'.$row["cmp_version"].' </span> </td>
+                  <td>'.$row["cmp_status"].' </span> </td>
+                  <td>'.$row["cmp_type"].' </span> </td>
+                  <td>'.$row["request_status"].' </span> </td>
+                  <td>'.$row["request_step"].' </span> </td>
+                  <td>'.$row["notes"].' </span> </td>
+                  </tr>');
+                  $count = 0;
+                  while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
+                    array_push($nodes, $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count]);
+                    $count++;
+                  }
+
+
+
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
@@ -149,6 +188,16 @@
                       <td>'.$row["request_step"].' </span> </td>
                       <td>'.$row["notes"].' </span> </td>
                       </tr>';
+                      //for storing red node data
+                  array_push($nodes, '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                      <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
+                      <td>'.$row["cmp_version"].' </span> </td>
+                      <td>'.$row["cmp_status"].' </span> </td>
+                      <td>'.$row["cmp_type"].' </span> </td>
+                      <td>'.$row["request_status"].' </span> </td>
+                      <td>'.$row["request_step"].' </span> </td>
+                      <td>'.$row["notes"].' </span> </td>
+                      </tr>');
                 }
                   
               }//end while
@@ -202,11 +251,15 @@ $(document).ready(function(){
 // }
 var color = 0;
 var showY = 0;
+var showR = 1;
 var rootCount = 0;
 var childCount = 0;
+var rootindex = <?php echo json_encode($nodeIndex) ?>;
+var nodes = <?php echo json_encode($nodes) ?>;
+var rootRed = <?php echo '["' . implode('", "', $rootRed) . '"]' ?>;
 var rootYellow = <?php echo '["' . implode('", "', $rootYellow) . '"]' ?>;
 var nodeYellow = <?php echo json_encode($nodeYellow) ?>;
-var nodeChild = <?php echo json_encode($nodeChild) ?>;
+var nodeChild = <?php echo json_encode($Child) ?>;
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 
 $("#expandAll").click(function(expand) {
@@ -227,7 +280,43 @@ $("#showOutOfSync").click(function(showOut){
     }
 });
 
-$("#showRed").click(function(showR){
+$("#showYellow").click(function(showYellow){
+  if(showR == 1){
+    while(rootCount < rootRed.length){
+      $("#sbomTable").treetable('removeNode',rootRed[rootCount]);
+      rootCount++;
+    }
+    showR = 0;
+  }
+  rootCount = 0;
+  if (showY == 0){
+    while(rootCount < rootYellow.length){
+      $("#sbomTable").treetable('loadBranch',null,nodeYellow[rootYellow[rootCount]]);
+      var id =  "".concat(rootYellow[rootCount],childCount);
+        while(id in nodeChild){
+          $("#sbomTable").treetable('loadBranch',null,nodeChild[id]);
+          childCount++;
+          id =  "".concat(rootYellow[rootCount],childCount);
+        } 
+      childCount = 0;
+      $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
+      $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
+      tree.treetable('destroy');
+      tree.find(".indenter").remove();
+      tree.treetable({expandable: true, initialState: "collapsed"});
+      
+      rootCount++;
+    }
+    showY = 1;
+    
+
+  }
+  rootCount = 0;
+})
+
+
+
+$("#showRed").click(function(showRed){
   if (showY == 1){
     while(rootCount < rootYellow.length){
       $("#sbomTable").treetable('removeNode',rootYellow[rootCount]); 
@@ -236,6 +325,20 @@ $("#showRed").click(function(showR){
     showY = 0;
   }
   rootCount = 0;
+  if(showR == 0){
+    while(rootCount < nodes.length){
+      
+      $("#sbomTable").treetable('loadBranch',null,nodes[rootCount]);
+      //if(rootIndex[rootCount].length > 1){
+      //  $("#sbomTable").treetable('collapseNode',rootIndex[rootCount]);
+      //  $("#sbomTable").treetable('expandNode',rootIndex[rootCount]);
+     // }
+      rootCount++;
+    }
+    
+  }
+  rootCount = 0;
+  
 });
 
 //testing move function
@@ -250,14 +353,35 @@ $("#showRedYellow").click(function(showRandY){
           id =  "".concat(rootYellow[rootCount],childCount);
         } 
       childCount = 0;
+      $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
+      $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
+      tree.treetable('destroy');
+      tree.find(".indenter").remove();
+      tree.treetable({expandable: true, initialState: "collapsed"});
+      
       rootCount++;
     }
     showY = 1;
+    
 
   }
   rootCount = 0;
+  if(showR == 0){
+    
+    while(rootCount < nodes.length){
+      
+      $("#sbomTable").treetable('loadBranch',null,nodes[rootCount]);
+      //if(rootIndex[rootCount].length > 1){
+      //  $("#sbomTable").treetable('collapseNode',rootIndex[rootCount]);
+      //  $("#sbomTable").treetable('expandNode',rootIndex[rootCount]);
+     // }
+      rootCount++;
+    }
+    showR = 1;
+  }
+  rootCount = 0;
 });
-$("#noColor").click(function(showR){
+$("#noColor").click(function(noColor){
   if (color == 0){
    $('.red').css('background-color', '#f8f7fa');
    $('.yellow').css('background-color', '#f8f7fa');
