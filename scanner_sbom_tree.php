@@ -102,7 +102,6 @@
               while($row = $result->fetch_assoc()) {
                 if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
                   array_push($rootRed, $row["app_id"]);
-                  $nodeIndex[sizeof($nodes)] = ["app_id"];
                   echo '<tr data-tt-id="'.$row["app_id"].'">
                           <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
                           <td>'.$row["app_version"].' </span> </td>
@@ -128,7 +127,8 @@
 
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
-                  $nodeIndex[sizeof($nodes)] = ["app_id"];
+                  
+                  array_push($nodeIndex,$row["app_id"]);
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                       <td>'.$row["cmp_version"].' </span> </td>
@@ -254,7 +254,7 @@ var showY = 0;
 var showR = 1;
 var rootCount = 0;
 var childCount = 0;
-var rootindex = <?php echo json_encode($nodeIndex) ?>;
+var rootIndex = <?php echo '["' . implode('", "', $nodeIndex) . '"]' ?>;
 var nodes = <?php echo json_encode($nodes) ?>;
 var rootRed = <?php echo '["' . implode('", "', $rootRed) . '"]' ?>;
 var rootYellow = <?php echo '["' . implode('", "', $rootYellow) . '"]' ?>;
@@ -299,14 +299,15 @@ $("#showYellow").click(function(showYellow){
           id =  "".concat(rootYellow[rootCount],childCount);
         } 
       childCount = 0;
-      $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
+      
       $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
-      tree.treetable('destroy');
-      tree.find(".indenter").remove();
-      tree.treetable({expandable: true, initialState: "collapsed"});
+      
       
       rootCount++;
     }
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "collapsed"});
     showY = 1;
     
 
@@ -329,14 +330,18 @@ $("#showRed").click(function(showRed){
     while(rootCount < nodes.length){
       
       $("#sbomTable").treetable('loadBranch',null,nodes[rootCount]);
-      //if(rootIndex[rootCount].length > 1){
-      //  $("#sbomTable").treetable('collapseNode',rootIndex[rootCount]);
-      //  $("#sbomTable").treetable('expandNode',rootIndex[rootCount]);
-     // }
+      
       rootCount++;
     }
+      for(index = 0; index < rootRed.length; index++){
+        $("#sbomTable").treetable('expandNode',rootRed[index]);
+      }
+      tree.treetable('destroy');
+      tree.find(".indenter").remove();
+      tree.treetable({expandable: true, initialState: "collapsed"});
     
   }
+  showR = 1;
   rootCount = 0;
   
 });
@@ -353,30 +358,39 @@ $("#showRedYellow").click(function(showRandY){
           id =  "".concat(rootYellow[rootCount],childCount);
         } 
       childCount = 0;
-      $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
       $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
-      tree.treetable('destroy');
-      tree.find(".indenter").remove();
-      tree.treetable({expandable: true, initialState: "collapsed"});
+      
       
       rootCount++;
     }
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "collapsed"});
     showY = 1;
     
 
   }
   rootCount = 0;
   if(showR == 0){
-    
+    var exists = "";
     while(rootCount < nodes.length){
       
       $("#sbomTable").treetable('loadBranch',null,nodes[rootCount]);
-      //if(rootIndex[rootCount].length > 1){
-      //  $("#sbomTable").treetable('collapseNode',rootIndex[rootCount]);
-      //  $("#sbomTable").treetable('expandNode',rootIndex[rootCount]);
+     // if(rootIndex[rootCount].length > 1){
+     //   exists = rootIndex[rootCount];
+     // }
+     // if(rootIndex[(rootCount+1)].length > 1){
+     //   $("#sbomTable").treetable('collapseNode',exists);
+     //   $("#sbomTable").treetable('expandNode',exists);
      // }
       rootCount++;
     }
+    for(index = 0; index < rootRed.length; index++){
+        $("#sbomTable").treetable('expandNode',rootRed[index]);
+    }
+    tree.treetable('destroy');
+    tree.find(".indenter").remove();
+    tree.treetable({expandable: true, initialState: "collapsed"});
     showR = 1;
   }
   rootCount = 0;
