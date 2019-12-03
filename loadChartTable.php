@@ -17,7 +17,7 @@
     }
     
     $dbTableName = "sbom";
-
+    if(isset($_POST["targetChart"]))
     if($chart == "app_status"){
         echo "<table id='info' class='table table-bordered table-hover'>";
             echo "<thead>";
@@ -92,6 +92,7 @@
     */
 
     // Populate table body.
+    if(isset($_POST["targetChart"])){
     if(isset($chart)) {
         if($chart == "app_status"){
             $sql = "SELECT app_name, app_version, app_status FROM sbom WHERE " . $chart . " = '" . $slice . "';";
@@ -113,6 +114,7 @@
             $sql = "SELECT * FROM sbom;";
         }
     }
+
     $result = $db->query($sql);
 
     if($result->num_rows > 0){
@@ -127,6 +129,7 @@
     echo "</table>";
     
     mysqli_close($db);
+}
 ?>
 
 <script type="text/javascript" language="javascript">
