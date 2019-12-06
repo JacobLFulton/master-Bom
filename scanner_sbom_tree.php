@@ -301,7 +301,7 @@ $("#showYellow").click(function(showYellow){
       childCount = 0;
       
       $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
-      
+      //$("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
       
       rootCount++;
     }
@@ -335,6 +335,7 @@ $("#showRed").click(function(showRed){
     }
       for(index = 0; index < rootRed.length; index++){
         $("#sbomTable").treetable('expandNode',rootRed[index]);
+        //$("#sbomTable").treetable('collapseNode',rootRed[index]);
       }
       tree.treetable('destroy');
       tree.find(".indenter").remove();
@@ -359,7 +360,7 @@ $("#showRedYellow").click(function(showRandY){
         } 
       childCount = 0;
       $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
-      
+     // $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
       
       rootCount++;
     }
@@ -387,6 +388,7 @@ $("#showRedYellow").click(function(showRandY){
     }
     for(index = 0; index < rootRed.length; index++){
         $("#sbomTable").treetable('expandNode',rootRed[index]);
+       // $("#sbomTable").treetable('collapseNode',rootRed[index]);
     }
     tree.treetable('destroy');
     tree.find(".indenter").remove();
