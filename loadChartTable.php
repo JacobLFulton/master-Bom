@@ -4,10 +4,8 @@
     $db = db_connect();
     $errors = array();
     $config = array();
-
     $chart;
     $slice;
-
     if(isset($_POST["targetChart"])){
         $chart = $_POST["targetChart"];
     }
@@ -40,7 +38,6 @@
     } elseif($chart == "request_status"){
         $sql = "SHOW columns FROM " . $dbTableName . ";";
         $result = $db->query($sql);
-
         echo "<table id='info' class='table table-bordered table-hover'>";
         if($result->num_rows > 0){
             echo "<thead>";
@@ -56,7 +53,6 @@
     } elseif($chart == "request_step"){
         $sql = "SHOW columns FROM " . $dbTableName . ";";
         $result = $db->query($sql);
-
         echo "<table id='info' class='table table-bordered table-hover'>";
         if($result->num_rows > 0){
             echo "<thead>";
@@ -70,27 +66,7 @@
             echo "</thead>";
         }
     }
-
-    /*
-    // Old implementation
-    // Populate table headers.
-    $sql = "SHOW columns FROM " . $dbTableName . ";";
-    $result = $db->query($sql);
-
-    echo "<table id='info' class='table table-bordered table-hover'>";
-    if($result->num_rows > 0){
-        echo "<thead>";
-        echo "<tr>";
-        while($row = $result->fetch_assoc()){
-            
-            echo "<th scope='col'>" . $row['Field'] . "</th>";
-            
-        }
-        echo "</tr>";
-        echo "</thead>";
-    }
-    */
-
+    
     // Populate table body.
     if(isset($_POST["targetChart"])){
     if(isset($chart)) {
@@ -114,9 +90,7 @@
             $sql = "SELECT * FROM sbom;";
         }
     }
-
     $result = $db->query($sql);
-
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             echo "<tr scope='row'>";
@@ -141,7 +115,6 @@
                 'copy', 'excel', 'csv', 'pdf'
             ] }
         );
-
         $('#info thead tr').clone(true).appendTo( '#info thead' );
         $('#info thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
@@ -164,5 +137,4 @@
         } );
         
     } );
-
 </script>
