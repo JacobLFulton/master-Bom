@@ -41,14 +41,7 @@
                 </div>
               </thead>
       <?php
-      //<th style="width:20px"><strong>App Version</strong></th>
-      // <th style="width:30px"><strong>App Name</strong></th>
-      //<th style="width:30px"><strong>CMP ID</strong></th>
-      //<th style="width:30px"><strong>CMP Name</strong></th>
-      //<th style="width:20px"><strong>CMP Version</strong></th>
-      //<th style="width:30px"><strong>CMP ID</strong></th>
-      //<th style="width:30px"><strong>CMP Name</strong></th>
-      //<th style="width:20px"><strong>CMP Version</strong></th>
+      
       $count = 0;
       $cmpArray = array();
       $appArray = array();
@@ -96,7 +89,7 @@
       $sql =  "SELECT * FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
       //$sql =  "SELECT * FROM sbom ORDER BY request_id ASC;";
           $result = $db->query($sql);
-	  $color = "#ecebf0";
+    $color = "#ecebf0";
           if ($result->num_rows > 0) {
           // output data of each row
               while($row = $result->fetch_assoc()) {
@@ -123,8 +116,6 @@
                           </tr>');
                   $pid = $row["app_id"];
                 }
-
-
                 if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
                   
@@ -174,9 +165,6 @@
                     array_push($nodes, $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count]);
                     $count++;
                   }
-
-
-
                 }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
                   echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
@@ -229,26 +217,7 @@ $(document).ready(function(){
     });
   });
 });
-// $(document).ready(function(){
-//   $("#whereUsedTextInput").on("keyup", function() {
-//     var input, filter, table, tr, td, i, txtValue;
-//     input = $("#whereUsedTextInput").val().toLowerCase();;
-//     filter = input.value.toUpperCase();
-//     table = document.getElementById("sbomTable");
-//     tr = table.getElementsByTagName("tr");
-//     for (i = 0; i < tr.length; i++) {
-//       td = tr[i].getElementsByTagName("td")[0];
-//       if (td) {
-//         txtValue = td.textContent || td.innerText;
-//         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-//           tr[i].style.display = "";
-//         } else {
-//           tr[i].style.display = "none";
-//         }
-//       }       
-//     }
-//   }
-// }
+
 var color = 0;
 var showY = 0;
 var showR = 1;
@@ -261,7 +230,6 @@ var rootYellow = <?php echo '["' . implode('", "', $rootYellow) . '"]' ?>;
 var nodeYellow = <?php echo json_encode($nodeYellow) ?>;
 var nodeChild = <?php echo json_encode($Child) ?>;
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
-
 $("#expandAll").click(function(expand) {
    tree.treetable('destroy');
    tree.find(".indenter").remove();
@@ -272,14 +240,12 @@ $("#collapseAll").click(function(collapse) {
    tree.find(".indenter").remove();
    tree.treetable({expandable: true, initialState: "collapsed"});
 });
-
 $("#showOutOfSync").click(function(showOut){
     while(rootCount < 6){
       $("#sbomTable").treetable('removeNode',rootYellow[rootCount]); 
       rootCount++;
     }
 });
-
 $("#showYellow").click(function(showYellow){
   if(showR == 1){
     while(rootCount < rootRed.length){
@@ -310,13 +276,9 @@ $("#showYellow").click(function(showYellow){
     tree.treetable({expandable: true, initialState: "collapsed"});
     showY = 1;
     
-
   }
   rootCount = 0;
 })
-
-
-
 $("#showRed").click(function(showRed){
   if (showY == 1){
     while(rootCount < rootYellow.length){
@@ -346,7 +308,6 @@ $("#showRed").click(function(showRed){
   rootCount = 0;
   
 });
-
 //testing move function
 $("#showRedYellow").click(function(showRandY){
   if (showY == 0){
@@ -369,7 +330,6 @@ $("#showRedYellow").click(function(showRandY){
     tree.treetable({expandable: true, initialState: "collapsed"});
     showY = 1;
     
-
   }
   rootCount = 0;
   if(showR == 0){
