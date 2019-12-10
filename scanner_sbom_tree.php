@@ -31,7 +31,7 @@
             width="100%" >
               <thead>
                 <div id="table-first-row"> 
-                        <th style="width:200px"><strong>App Name</strong></th>
+                        <th style="width:200px"><strong>App name</strong></th>
                         <th style="width:30px"><strong>Version</strong></th>
                         <th style="width:30px"><strong>Status</strong></th>
                         <th style="width:30px"><strong>CMP type</strong></th>
@@ -59,14 +59,14 @@
         $color = "#ecebf0";
         if ($appRes->num_rows > 0) {
           while($row = $appRes->fetch_assoc()) {
-            if($pid != $row["app_id"]){
+            if($pid != $row["app_name"]){
               $count = 0;
-              $pid = $row["app_id"];
+              $pid = $row["app_name"];
             }
             
-            $nodeIDArray[$row["app_id"].$count] =
-            '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'';
-            $nodeArray[$row["app_id"].$count] = 
+            $nodeIDArray[$row["app_name"].$count] =
+            '<tr data-tt-id="'.$row["cmp_name"].'" data-tt-parent-id="'.$row["app_name"].'';
+            $nodeArray[$row["app_name"].$count] = 
             '">
             <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
             <td>'.$row["cmp_version"].' </span> </td>
@@ -76,8 +76,8 @@
             <td>'.$row["request_step"].' </span> </td>
             <td>'.$row["notes"].' </span> </td>
             </tr>';
-            array_push($appArray,$row["app_id"]);
-            array_push($cmpArray,$row["cmp_id"]);
+            array_push($appArray,$row["app_name"]);
+            array_push($cmpArray,$row["cmp_name"]);
             $count++;
           }
         }
@@ -86,16 +86,16 @@
         }//end else
       $appRes->close();
       
-      $sql =  "SELECT * FROM sbom ORDER BY app_id,app_name,app_version,cmp_id,cmp_name,cmp_version ASC;";
+      $sql =  "SELECT * FROM sbom ORDER BY app_name,app_name,app_version,cmp_name,cmp_name,cmp_version ASC;";
       //$sql =  "SELECT * FROM sbom ORDER BY request_id ASC;";
           $result = $db->query($sql);
     $color = "#ecebf0";
           if ($result->num_rows > 0) {
           // output data of each row
               while($row = $result->fetch_assoc()) {
-                if($pid != $row["app_id"] && !in_array($row["app_id"],$cmpArray)){ //creates a new app node (root) if the app_id is not a component
-                  array_push($rootRed, $row["app_id"]);
-                  echo '<tr data-tt-id="'.$row["app_id"].'">
+                if($pid != $row["app_name"] && !in_array($row["app_name"],$cmpArray)){ //creates a new app node (root) if the app_name is not a component
+                  array_push($rootRed, $row["app_name"]);
+                  echo '<tr data-tt-id="'.$row["app_name"].'">
                           <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
                           <td>'.$row["app_version"].' </span> </td>
                           <td>'.$row["app_status"].' </span> </td>'.
@@ -105,7 +105,7 @@
                           <td>'.$row["notes"].' </span> </td>
                           </tr>';    
                           //for storing red node data
-                  array_push($nodes,'<tr data-tt-id="'.$row["app_id"].'">
+                  array_push($nodes,'<tr data-tt-id="'.$row["app_name"].'">
                           <td class="red" bgcolor = "#ff6666">'.$row["app_name"].' </td>
                           <td>'.$row["app_version"].' </span> </td>
                           <td>'.$row["app_status"].' </span> </td>'.
@@ -114,13 +114,13 @@
                           <td>'.$row["request_step"].' </span> </td>
                           <td>'.$row["notes"].' </span> </td>
                           </tr>');
-                  $pid = $row["app_id"];
+                  $pid = $row["app_name"];
                 }
-                if(in_array($row["cmp_id"],$appArray)){ //if the component is a child application,
+                if(in_array($row["cmp_name"],$appArray)){ //if the component is a child application,
                                                         // it pulls the child components of that application
                   
-                  array_push($nodeIndex,$row["app_id"]);
-                  echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                  array_push($nodeIndex,$row["app_name"]);
+                  echo'<tr data-tt-id="'.$row["cmp_name"].'" data-tt-parent-id="'.$row["app_name"].'">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                       <td>'.$row["cmp_version"].' </span> </td>
                       <td>'.$row["cmp_status"].' </span> </td>
@@ -130,13 +130,13 @@
                       <td>'.$row["notes"].' </span> </td>
                       </tr>';
                   $count = 0;
-                  while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
-                    echo $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count];
+                  while(array_key_exists($row["cmp_name"].$count,$nodeArray)){
+                    echo $nodeIDArray[$row["cmp_name"].$count].$nodeArray[$row["cmp_name"].$count];
                     $count++;
                   }
                   //for root yellow
-                  array_push($rootYellow, $row["cmp_id"].'root');
-                  $nodeYellow[$row["cmp_id"].'root']='<tr data-tt-id="'.$row["cmp_id"].'root">
+                  array_push($rootYellow, $row["cmp_name"].'root');
+                  $nodeYellow[$row["cmp_name"].'root']='<tr data-tt-id="'.$row["cmp_name"].'root">
                       <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                       <td>'.$row["cmp_version"].' </span> </td>
                       <td>'.$row["cmp_status"].' </span> </td>
@@ -146,12 +146,12 @@
                       <td>'.$row["notes"].' </span> </td>
                       </tr>';
                   $count = 0;
-                  while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
-                    $Child[$row["cmp_id"].'root'.$count] = $nodeIDArray[$row["cmp_id"].$count]."root".$nodeArray[$row["cmp_id"].$count];
+                  while(array_key_exists($row["cmp_name"].$count,$nodeArray)){
+                    $Child[$row["cmp_name"].'root'.$count] = $nodeIDArray[$row["cmp_name"].$count]."root".$nodeArray[$row["cmp_name"].$count];
                     $count++;
                   }
                   //for storing red node data
-                  array_push($nodes, '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                  array_push($nodes, '<tr data-tt-id="'.$row["cmp_name"].'" data-tt-parent-id="'.$row["app_name"].'">
                   <td class="yellow" bgcolor = "#f5fa69">'.$row["cmp_name"].' </td>
                   <td>'.$row["cmp_version"].' </span> </td>
                   <td>'.$row["cmp_status"].' </span> </td>
@@ -161,13 +161,13 @@
                   <td>'.$row["notes"].' </span> </td>
                   </tr>');
                   $count = 0;
-                  while(array_key_exists($row["cmp_id"].$count,$nodeArray)){
-                    array_push($nodes, $nodeIDArray[$row["cmp_id"].$count].$nodeArray[$row["cmp_id"].$count]);
+                  while(array_key_exists($row["cmp_name"].$count,$nodeArray)){
+                    array_push($nodes, $nodeIDArray[$row["cmp_name"].$count].$nodeArray[$row["cmp_name"].$count]);
                     $count++;
                   }
-                }elseif(!in_array($row["app_id"],$cmpArray)){ //if the component is not also an application and it's also not a 
+                }elseif(!in_array($row["app_name"],$cmpArray)){ //if the component is not also an application and it's also not a 
                                                               //component of a child application, it's set as a child of it's application
-                  echo'<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                  echo'<tr data-tt-id="'.$row["cmp_name"].'" data-tt-parent-id="'.$row["app_name"].'">
                       <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
                       <td>'.$row["cmp_version"].' </span> </td>
                       <td>'.$row["cmp_status"].' </span> </td>
@@ -177,7 +177,7 @@
                       <td>'.$row["notes"].' </span> </td>
                       </tr>';
                       //for storing red node data
-                  array_push($nodes, '<tr data-tt-id="'.$row["cmp_id"].'" data-tt-parent-id="'.$row["app_id"].'">
+                  array_push($nodes, '<tr data-tt-id="'.$row["cmp_name"].'" data-tt-parent-id="'.$row["app_name"].'">
                       <td class="green" bgcolor = "#57c95c">'.$row["cmp_name"].' </td>
                       <td>'.$row["cmp_version"].' </span> </td>
                       <td>'.$row["cmp_status"].' </span> </td>
