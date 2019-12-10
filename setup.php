@@ -39,13 +39,27 @@
 <form action="" method="get">
   <h3>Date Range</h3>
   <p>from:</p>
-  <input type="text" name="min_date" >
+  <input type="date" name="min_date">
   <p>to:</p>
-  <input type="text" name="max_date" >
+  <input type="date" name="max_date">
   <h3>Release Status</h3>
-  <input type="text" name="release_status" >
+  <select name="release_status">
+    <option value="released">Released</option>
+    <option value="in_review">In Review</option>
+    <option value="submitted">Submitted</option>
+    <option value="pending">Pending</option>
+    <option value="approved">Approved</option>
+</select>
   <h3>Release Type</h3>
-  <input type="text" name="release_type"><br>
+  <select name="release_type">
+    <option value="Released">Released</option>
+    <option value="Planning">Planning</option>
+    <option value="On_hold">On hold</option>
+    <option value="Estimation">Estimation</option>
+    <option value="Review">Review</option>
+</select>
+  <br>
+  
   <br>
   <input type="Submit" name="submit" value="Apply Settings">
 
