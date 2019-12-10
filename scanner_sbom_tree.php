@@ -231,14 +231,16 @@ var nodeYellow = <?php echo json_encode($nodeYellow) ?>;
 var nodeChild = <?php echo json_encode($Child) ?>;
 var tree = $("#sbomTable").treetable({expandable: true, initialState: "collapsed"});
 $("#expandAll").click(function(expand) {
-   tree.treetable('destroy');
-   tree.find(".indenter").remove();
-   tree.treetable({expandable: true, initialState: "expanded"});
+  $("#sbomTable").treetable('expandAll');
+   //tree.treetable('destroy');
+   //tree.find(".indenter").remove();
+   //tree.treetable({expandable: true, initialState: "expanded"});
 });
 $("#collapseAll").click(function(collapse) {
-   tree.treetable('destroy');
-   tree.find(".indenter").remove();
-   tree.treetable({expandable: true, initialState: "collapsed"});
+  $("#sbomTable").treetable('collapseAll');
+   //tree.treetable('destroy');
+   //tree.find(".indenter").remove();
+   //tree.treetable({expandable: true, initialState: "collapsed"});
 });
 $("#showOutOfSync").click(function(showOut){
     while(rootCount < 6){
@@ -267,13 +269,13 @@ $("#showYellow").click(function(showYellow){
       childCount = 0;
       
       $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
-      //$("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
+      $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
       
       rootCount++;
     }
-    tree.treetable('destroy');
-    tree.find(".indenter").remove();
-    tree.treetable({expandable: true, initialState: "collapsed"});
+    //tree.treetable('destroy');
+    //tree.find(".indenter").remove();
+    //tree.treetable({expandable: true, initialState: "collapsed"});
     showY = 1;
     
   }
@@ -297,11 +299,11 @@ $("#showRed").click(function(showRed){
     }
       for(index = 0; index < rootRed.length; index++){
         $("#sbomTable").treetable('expandNode',rootRed[index]);
-        //$("#sbomTable").treetable('collapseNode',rootRed[index]);
+        $("#sbomTable").treetable('collapseNode',rootRed[index]);
       }
-      tree.treetable('destroy');
-      tree.find(".indenter").remove();
-      tree.treetable({expandable: true, initialState: "collapsed"});
+      //tree.treetable('destroy');
+      //tree.find(".indenter").remove();
+      //tree.treetable({expandable: true, initialState: "collapsed"});
     
   }
   showR = 1;
@@ -321,13 +323,13 @@ $("#showRedYellow").click(function(showRandY){
         } 
       childCount = 0;
       $("#sbomTable").treetable('expandNode',rootYellow[rootCount]);
-     // $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
+      $("#sbomTable").treetable('collapseNode',rootYellow[rootCount]);
       
       rootCount++;
     }
-    tree.treetable('destroy');
-    tree.find(".indenter").remove();
-    tree.treetable({expandable: true, initialState: "collapsed"});
+    //tree.treetable('destroy');
+    //tree.find(".indenter").remove();
+    //tree.treetable({expandable: true, initialState: "collapsed"});
     showY = 1;
     
   }
@@ -348,11 +350,11 @@ $("#showRedYellow").click(function(showRandY){
     }
     for(index = 0; index < rootRed.length; index++){
         $("#sbomTable").treetable('expandNode',rootRed[index]);
-       // $("#sbomTable").treetable('collapseNode',rootRed[index]);
+        $("#sbomTable").treetable('collapseNode',rootRed[index]);
     }
-    tree.treetable('destroy');
-    tree.find(".indenter").remove();
-    tree.treetable({expandable: true, initialState: "collapsed"});
+    //tree.treetable('destroy');
+    //tree.find(".indenter").remove();
+    //tree.treetable({expandable: true, initialState: "collapsed"});
     showR = 1;
   }
   rootCount = 0;
